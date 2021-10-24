@@ -1,6 +1,7 @@
 # DataBase_Course
 
-[link youtube](https://www.youtube.com/watch?v=T8mqZZ0r-RA&t=112s)
+[link youtube](https://www.youtube.com/watch?v=T8mqZZ0r-RA)
+[link youtube](https://www.youtube.com/watch?v=3YrOOia3-mo)
 
 
 terminal:
