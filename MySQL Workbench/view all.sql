@@ -1,0 +1,1 @@
+SELECT * FROM database_course.movie_reviews;
