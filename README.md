@@ -10,5 +10,5 @@
 + cd server  ->  npm run devStart
 
 
-client - frontend
+client - frontend     
 server - backend
