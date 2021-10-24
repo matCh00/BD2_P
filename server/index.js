@@ -5,13 +5,14 @@ const cors = require('cors');
 
 
 // do bazy danych
-const mysql = require('mysql');
+const mysql = require("mysql");
 const db = mysql.createPool({
     host: 'localhost',
     user: 'root',
     password: '162534',
     database: 'database_course',
 });
+
 
 
 app.use(cors());
@@ -34,6 +35,15 @@ app.post("/api/insert", (req, res) => {
 });
 
 
+
+app.get("/", (req, res) => {
+
+    const sqlInsert = "INSERT INTO movie_reviews (movieName, movieReview) VALUES ('pierwsze', 'drugie');";
+    db.query(sqlInsert, (err, result) => {
+        res.send("hello");
+    });
+});
+
 app.listen(3001, () => {
-    console.log("running on port 3001")
+    console.log("running on port 3001");
 });

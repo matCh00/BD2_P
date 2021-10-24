@@ -1,11 +1,12 @@
-import React, {useState, useEffect} from "react"
-import Axios from 'axios'
-import './App.css';
+import React from "react";
+import useState from "react";
+import Axios from "axios";
+import "./App.css";
 
 function App() {
 
-  const [movieName, setMovieName] = useState('')
-  const [review, setReview] = useState('')
+  const [movieName, setMovieName] = React.useState("");
+  const [review, setReview] = React.useState("");
 
   const submitReview = () => {
     Axios.post("http://localhost:3001/api/insert", {

@@ -12,6 +12,8 @@ npm start
 cd server
 node index.js
 
+npm run devStart
+
 
 
 client - frontend
