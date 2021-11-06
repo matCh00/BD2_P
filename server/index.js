@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 
-// do bazy danych
+// dane do serwera MySQL
 const mysql = require("mysql");
 const db = mysql.createPool({
     host: 'localhost',
@@ -14,13 +14,12 @@ const db = mysql.createPool({
 });
 
 
-
 app.use(cors());
 app.use(express.json())
 app.use(bodyParser.urlencoded({extended: true}));
 
 
-// pobieranie ze strony i zapis w bazie danych
+// zapis danych ze strony w bazie danych
 app.post("/api/insert", (req, res) => {
 
     const movieName = req.body.movieName;
@@ -36,6 +35,8 @@ app.post("/api/insert", (req, res) => {
 
 
 
+// przykładowe wysłanie danych do bazy
+/*
 app.get("/", (req, res) => {
 
     const sqlInsert = "INSERT INTO movie_reviews (movieName, movieReview) VALUES ('pierwsze', 'drugie');";
@@ -43,7 +44,10 @@ app.get("/", (req, res) => {
         res.send("hello");
     });
 });
+*/
 
+
+// nasłuchiwanie
 app.listen(3001, () => {
     console.log("running on port 3001");
 });

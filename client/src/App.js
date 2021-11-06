@@ -1,5 +1,6 @@
 import React from "react";
 import useState from "react";
+import useEffect from "react";
 import Axios from "axios";
 import "./App.css";
 
@@ -8,6 +9,7 @@ function App() {
   const [movieName, setMovieName] = React.useState("");
   const [review, setReview] = React.useState("");
 
+  // przesłyłanie danych z frontendu (strona) do backendu (bazy danych)
   const submitReview = () => {
     Axios.post("http://localhost:3001/api/insert", {
       movieName: movieName, 
