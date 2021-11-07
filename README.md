@@ -6,6 +6,7 @@
 
 [client App.js](https://github.com/matCh00/DataBase_Course/blob/main/client/src/App.js)     
 [client App.css](https://github.com/matCh00/DataBase_Course/blob/main/client/src/App.css)     
+[client index.html](https://github.com/matCh00/DataBase_Course/blob/main/client/public/index.html)     
 [server index.js](https://github.com/matCh00/DataBase_Course/blob/main/server/index.js)     
 
 ### MySQL Command Line Client
