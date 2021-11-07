@@ -15,13 +15,18 @@ function App() {
   // lista filmów wraz z recenzjami
   const [movieReviewList, setMovieList] = React.useState([]);
 
+  // nowa recenzja
+  const [newReview, setNewReview] = React.useState("");
 
-  // formatowanie wyświetlania danych na frontendzie
+
+
+  // wyświetlanie danych na frontendzie
   useEffect(() => {
     Axios.get("http://localhost:3001/api/get").then((response) => {
       setMovieList(response.data);
     });
   }, []);
+
 
 
   // przesłyłanie danych z frontendu (strona) do backendu (bazy danych)
@@ -32,7 +37,6 @@ function App() {
       movieReview: review
     });
 
-
     // aktualizacja bez potrzeby odświerzania strony
     setMovieList([
       ...movieReviewList, 
@@ -42,6 +46,7 @@ function App() {
   };
 
 
+
   // usuwanie rezencji
   const deleteReview = (movie) => {
 
@@ -49,26 +54,29 @@ function App() {
   };
 
 
+
+  // aktualizacja rezencji
+  const updateReview = (movie) => {
+
+    Axios.put("http://localhost:3001/api/update", {
+      movieName: movie,
+      movieReview: newReview,
+    });
+    setNewReview("");
+  };
+
+
+
   return ( 
     <div className="App">
-      <h1>DB Application</h1>   
+      <h1> DB Application </h1>   
 
         <div className="form">
           <label> Movie name: </label>
-          <input 
-            type="text" 
-            name="movieName" 
-            onChange={(e)=> {
-              setMovieName(e.target.value)}}/>
+          <input type="text" name="movieName" onChange={(e)=> {setMovieName(e.target.value)}} />
 
           <label> Review: </label>
-          <input 
-            type="text" 
-            name="review" 
-            onChange={(e)=> {
-              setReview(e.target.value);
-            }}
-          /> 
+          <input type="text" name="review" onChange={(e)=> {setReview(e.target.value)}} /> 
 
           <button onClick={submitReview}> Submit </button>
 
@@ -81,17 +89,18 @@ function App() {
 
                 <button onClick={() => {deleteReview(val.movieName)}}> Delete </button>
 
-                <input type="text" id="updateInput"/>
-                <button> Update </button>
+                <input type="text" id="updateInput" onChange={(e) => {setNewReview(e.target.value)}}/>
+
+                <button onClick={() => {updateReview(val.movieName)}}> Update </button>
 
               </div>
-            );
+            )
           })}
 
         </div>
       
     </div>
-  );
+  )
 }
 
 export default App;

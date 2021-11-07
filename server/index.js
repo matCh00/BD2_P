@@ -61,16 +61,19 @@ app.delete(`/api/delete/:movieName`, (req, res) => {
 });
 
 
-// przykładowe wysłanie danych do bazy
-/*
-app.get("/", (req, res) => {
+// aktualizowanie recenzji
+app.put("/api/update", (req, res) => {
 
-    const sqlInsert = "INSERT INTO movie_reviews (movieName, movieReview) VALUES ('pierwsze', 'drugie');";
-    db.query(sqlInsert, (err, result) => {
-        res.send("hello");
+    const name = req.body.movieName;
+    const review = req.body.movieReview;
+
+    const sqlUpdate = 
+    "UPDATE movie_reviews SET movieReview = ? WHERE movieName = ?";
+
+    db.query(sqlUpdate, [review, name], (err, result) => {
+        if (err) console.log(err);
     });
 });
-*/
 
 
 // nasłuchiwanie
