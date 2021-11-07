@@ -2,6 +2,7 @@
 
 [yt link 1](https://www.youtube.com/watch?v=T8mqZZ0r-RA)     
 [yt link 2](https://www.youtube.com/watch?v=3YrOOia3-mo)
+[yt link 3](https://www.youtube.com/watch?v=_S2GKnFpdtE)
 
 [client App.js](https://github.com/matCh00/DataBase_Course/blob/main/client/src/App.js)     
 [server index.js](https://github.com/matCh00/DataBase_Course/blob/main/server/index.js)
@@ -21,6 +22,6 @@
 + cd client  ->  npm start
 + cd server  ->  npm run devStart (skrypty w package.json)
 
-
+ctrl + c  zatrzymuje działające wątki w terminalu
 client - frontend     
 server - backend

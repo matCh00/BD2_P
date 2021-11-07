@@ -19,6 +19,19 @@ app.use(express.json())
 app.use(bodyParser.urlencoded({extended: true}));
 
 
+// przesłanie danych z backendu do frontendu
+app.get("/api/get", (req, res) => {
+
+    const sqlSelect = "SELECT * FROM movie_reviews";
+
+    db.query(sqlSelect, (err, result) => {
+        
+        // i wyświetlenie
+        res.send(result);
+    });
+});
+
+
 // zapis danych ze strony w bazie danych
 app.post("/api/insert", (req, res) => {
 
@@ -26,7 +39,7 @@ app.post("/api/insert", (req, res) => {
     const movieReview = req.body.movieReview;
 
     const sqlInsert = 
-    "INSERT INTO movie_reviews (movieName, movieReview) VALUES (?,?)"
+    "INSERT INTO movie_reviews (movieName, movieReview) VALUES (?,?)";
 
     db.query(sqlInsert, [movieName, movieReview], (err, result) => {
         console.log(result);

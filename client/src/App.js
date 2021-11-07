@@ -1,6 +1,6 @@
 import React from "react";
 import useState from "react";
-import useEffect from "react";
+import { useEffect } from "react";
 import Axios from "axios";
 import "./App.css";
 
@@ -8,6 +8,16 @@ function App() {
 
   const [movieName, setMovieName] = React.useState("");
   const [review, setReview] = React.useState("");
+  const [movieReviewList, setMovieList] = React.useState([]);
+
+
+  // formatowanie wyświetlania danych na frontendzie
+  useEffect(() => {
+    Axios.get("http://localhost:3001/api/get").then((response) => {
+      setMovieList(response.data);
+    });
+  }, []);
+
 
   // przesłyłanie danych z frontendu (strona) do backendu (bazy danych)
   const submitReview = () => {
@@ -39,6 +49,10 @@ function App() {
               setReview(e.target.value)}}/> 
 
           <button onClick={submitReview}> Submit </button>
+
+          {movieReviewList.map((val) => {
+            return <h3>MovieName: {val.movieName} | MovieReview: {val.movieReview}</h3>
+          })}
         </div>
       
     </div>
