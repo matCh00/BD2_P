@@ -6,8 +6,13 @@ import "./App.css";
 
 function App() {
 
+  // nazwa filmu (pole tekstowe)
   const [movieName, setMovieName] = React.useState("");
+
+  // recenzja (pole tekstowe)
   const [review, setReview] = React.useState("");
+
+  // lista filmów wraz z recenzjami
   const [movieReviewList, setMovieList] = React.useState([]);
 
 
@@ -21,13 +26,28 @@ function App() {
 
   // przesłyłanie danych z frontendu (strona) do backendu (bazy danych)
   const submitReview = () => {
+
     Axios.post("http://localhost:3001/api/insert", {
       movieName: movieName, 
       movieReview: review
-    }).then(() => {
-      alert('successful insert');
     });
+
+
+    // aktualizacja bez potrzeby odświerzania strony
+    setMovieList([
+      ...movieReviewList, 
+      {movieName: movieName, movieReview: review},
+    ]);
+
   };
+
+
+  // usuwanie rezencji
+  const deleteReview = (movie) => {
+
+    Axios.delete(`http://localhost:3001/api/delete/${movie}`);
+  };
+
 
   return ( 
     <div className="App">
@@ -46,13 +66,28 @@ function App() {
             type="text" 
             name="review" 
             onChange={(e)=> {
-              setReview(e.target.value)}}/> 
+              setReview(e.target.value);
+            }}
+          /> 
 
           <button onClick={submitReview}> Submit </button>
 
           {movieReviewList.map((val) => {
-            return <h3>MovieName: {val.movieName} | MovieReview: {val.movieReview}</h3>
+            return (
+
+              <div className="card">
+                <h2> {val.movieName} </h2>
+                <p> {val.movieReview} </p>
+
+                <button onClick={() => {deleteReview(val.movieName)}}> Delete </button>
+
+                <input type="text" id="updateInput"/>
+                <button> Update </button>
+
+              </div>
+            );
           })}
+
         </div>
       
     </div>

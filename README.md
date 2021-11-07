@@ -5,7 +5,8 @@
 [yt link 3](https://www.youtube.com/watch?v=_S2GKnFpdtE)
 
 [client App.js](https://github.com/matCh00/DataBase_Course/blob/main/client/src/App.js)     
-[server index.js](https://github.com/matCh00/DataBase_Course/blob/main/server/index.js)
+[client App.css](https://github.com/matCh00/DataBase_Course/blob/main/client/src/App.css)     
+[server index.js](https://github.com/matCh00/DataBase_Course/blob/main/server/index.js)     
 
 ### MySQL Command Line Client
 + hasło "162534"

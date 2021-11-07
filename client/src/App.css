@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  font-family: fantasy;
 }
 
 .form {
@@ -14,4 +15,19 @@
   height: 60px;
   margin: 10px;
   font-size: 25px;
+}
+
+/* klasa reprezentująca okienka na stronie z filmami */
+.card {
+  width: 400px;
+  height: 170px;
+  border: 2px solid black;
+  border-radius: 15px;
+  margin: 10px;
+}
+
+/* update */
+#updateInput {
+  width: 100px;
+  height: 20px;
 }
