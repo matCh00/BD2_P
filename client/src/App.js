@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import Axios from "axios";
 import "./App.css";
 
+
 function App() {
 
   // nazwa filmu (pole tekstowe)
@@ -69,7 +70,8 @@ function App() {
 
   return ( 
     <div className="App">
-      <h1> DB Application </h1>   
+
+      <h1> Wypożyczalnia filmów </h1>   
 
         <div className="form">
           <label> Movie name: </label>
@@ -98,7 +100,6 @@ function App() {
           })}
 
         </div>
-      
     </div>
   )
 }

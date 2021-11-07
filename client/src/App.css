@@ -1,6 +1,7 @@
 .App {
   text-align: center;
   font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background: linear-gradient(135deg, #e4f5fc 0%,#bfe8f9 24%,#9fd8ef 58%,#2ab0ed 100%);
 }
 
 .form {
@@ -15,6 +16,8 @@
   height: 60px;
   margin: 10px;
   font-size: 25px;
+  border: 1px solid black;
+  border-radius: 15px;
 }
 
 /* klasa reprezentująca okienka na stronie z filmami */
@@ -24,6 +27,7 @@
   border: 2px solid black;
   border-radius: 15px;
   margin: 10px;
+  background: linear-gradient(135deg, #f2f9fe 0%,#d6f0fd 100%);
 }
 
 /* update */
@@ -31,4 +35,12 @@
   width: 165px;
   height: 20px;
   font-size: 13px;
+}
+
+/* przyciski */
+button { 
+  color:rgb(0, 0, 0); 
+  background: linear-gradient(135deg, #66b6fc 0%,#b2e1ff 100%);
+  border:1px solid; 
+  border-radius: 5px;
 }
