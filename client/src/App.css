@@ -44,3 +44,384 @@ button {
   border:1px solid; 
   border-radius: 5px;
 }
+
+
+
+
+
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Kumbh Sans', sans-serif;
+  scroll-behavior: smooth;
+}
+
+
+/* pasek nawigacji */
+
+.navbar {
+  background: #131313;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+
+.navbar__container {
+  display: flex;
+  justify-content: space-between;
+  height: 80px;
+  z-index: 1;
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 50px;
+}
+
+
+/* napis "Wypożyczalnia filmów" */
+#navbar__logo {
+  background: #ee0979;
+  background: -webkit-linear-gradient(to right,#ff6a00,#ee0979);
+  background: linear-gradient(to right,#ff6a00,#ee0979);
+  background-size: 100%;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 2.5rem;
+}
+
+
+.navbar__menu {
+  display: flex;
+  align-items: center;
+  list-style: none;
+}
+
+
+.navbar__item {
+  height: 80px;
+}
+
+
+/* białe elementy na pasku nawigacji */
+.navbar__links {
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 140px;
+  text-decoration: none;
+  height: 100%;
+  transition: all 0.3s ease;
+}
+
+
+/* najechanie kursorem na element */
+.navbar__links:hover {
+  color: #9518fc;
+  transition: all 0.3s ease;
+}
+
+
+/* przycisk "Zaloguj się" */
+.navbar__btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 1rem;
+  width: 100%;
+}
+
+
+/* wszystkie przyciski */
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  padding: 10px 20px;
+  height: 100%;
+  width: 100%;
+  border: none;
+  outline: none;
+  border-radius: 4px;
+  background: #833ab4;
+  background: -webkit-linear-gradient(to right, #fcb045, #fd1d1d, #833ab4);
+  background: linear-gradient(to right, #fcb045, #fd1d1d, #833ab4);
+  color: #fff;
+  transition: all 0.3s ease;
+}
+
+
+/* przyciski */
+.main__btn {
+  font-size: 1.8rem;
+  background: #833ab4;
+  background: -webkit-linear-gradient(to right, #fcb045, #fd1d1d, #833ab4);
+  background: linear-gradient(to right, #fcb045, #fd1d1d, #833ab4);
+  padding: 20px 60px;
+  border: none;
+  border-radius: 4px;
+  margin-top: 2rem;
+  margin: 10px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.35s;
+  outline: none;
+}
+
+
+.main__btn a {
+  position: relative;
+  z-index: 2;
+  color: #fff;
+  text-decoration: none;
+}
+
+
+.main__btn:after {
+  position: absolute;
+  content: '';
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background: #ff1ead;
+  transition: all 0.35s;
+  border-radius: 4px;
+}
+
+
+.main__btn:hover {
+  color: #fff;
+}
+
+
+.main__btn:hover:after {
+  width: 100%;
+}
+
+
+
+/* lista filmów */
+
+.list {
+  background: #000000;
+  background: linear-gradient(to right, #161616, #000000);
+  padding: 300px 0;
+}
+
+
+.list__container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 90%;
+  text-align: center;
+  padding: 30px;
+}
+
+
+.list__heading {
+  font-size: 60px;
+  margin-bottom: 30px;
+  color: #fff;
+}
+
+
+.list__heading span {
+  background: #ee0979;
+  background: -webkit-linear-gradient(to right,#ff6a00,#ee0979);
+  background: linear-gradient(to right,#ff6a00,#ee0979);
+  background-size: 100%;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -mo-text-fill-color: transparent;
+}
+
+
+.highlight {
+  border-bottom: 4px solid rgb(132, 0, 255);
+}
+
+
+
+/* wypożyczenie filmu */
+
+.borrow {
+  background: #000000;
+  background: linear-gradient(to right, #000000, #161616);
+  padding: 300px 0;
+}
+
+
+.borrow__container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  margin: 0 auto;
+  height: 90%;
+  z-index: 1;
+  width: 100%;
+  max-width: 1300px;
+  padding: 0 50px;
+}
+
+
+.borrow__container h1 {
+  font-size: 60px;
+  margin-bottom: 30px;
+  color: #fff;
+  background: #ee0979;
+  background: -webkit-linear-gradient(to right,#ff6a00,#ee0979);
+  background: linear-gradient(to right,#ff6a00,#ee0979);
+  background-size: 100%;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -mo-text-fill-color: transparent;
+}
+
+
+
+/* zarządzanie filmami */
+
+.manage {
+  background: #000000;
+  background: linear-gradient(to right, #161616, #000000);
+  padding: 300px 0;
+}
+
+
+.manage__container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  margin: 0 auto;
+  height: 90%;
+  z-index: 1;
+  width: 100%;
+  max-width: 1300px;
+  padding: 0 50px;
+}
+
+
+.manage__container h1 {
+  font-size: 60px;
+  margin-bottom: 30px;
+  color: #fff;
+  background: #ee0979;
+  background: -webkit-linear-gradient(to right,#ff6a00,#ee0979);
+  background: linear-gradient(to right,#ff6a00,#ee0979);
+  background-size: 100%;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -mo-text-fill-color: transparent;
+}
+
+
+
+/* logowanie */
+
+.login {
+  background: #000000;
+  background: linear-gradient(to right, #000000, #161616);
+  padding: 300px 0;
+}
+
+
+.login__container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  margin: 0 auto;
+  height: 90%;
+  z-index: 1;
+  width: 100%;
+  max-width: 1300px;
+  padding: 0 50px;
+}
+
+
+.login__container h1 {
+  font-size: 60px;
+  margin-bottom: 30px;
+  color: #fff;
+  background: #ee0979;
+  background: -webkit-linear-gradient(to right,#ff6a00,#ee0979);
+  background: linear-gradient(to right,#ff6a00,#ee0979);
+  background-size: 100%;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -mo-text-fill-color: transparent;
+}
+
+
+
+/* input */
+
+.input {
+  outline-width: 0;
+  height: 60px;
+  width: 500px;
+  padding: 10px 20px;
+  font-size: 20px;
+  background: #ffffff;
+  color: -webkit-linear-gradient(to right,#ff6a00,#ee0979);
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  border: none;
+  outline: none;
+  border-radius: 4px;
+  margin: 10px;
+}
+
+
+/* tabela */
+table {
+  margin: 50px auto;
+  font-size: 30px;
+  width: 900px;
+  color: #fff;
+  border-color: #fff;
+}
+
+
+table, th, td {
+  border-collapse: collapse;
+  border: 1px solid;
+  border-radius: 3px;
+}
+
+
+th, td {
+  padding: 10px;
+}
