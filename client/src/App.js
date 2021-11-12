@@ -108,17 +108,17 @@ function App() {
 
       <div class="list" id="list">
         <div class="list__container">
+          <h1 class="list__heading"><span>Dostępne filmy</span></h1>
 
           {movieReviewList.map((val) => {
             return (
-
               <div className="card">
                 <h2> {val.movieName} </h2>
                 <p> {val.movieReview} </p>
 
                 <button onClick={() => {deleteReview(val.movieName)}}> Delete </button>
 
-                <input type="text" id="updateInput" onChange={(e) => {setNewReview(e.target.value)}}/>
+                <input spellcheck="false" type="text" id="updateInput" onChange={(e) => {setNewReview(e.target.value)}}/>
 
                 <button onClick={() => {updateReview(val.movieName)}}> Update </button>
 
@@ -126,11 +126,14 @@ function App() {
             )
           })}
 
-          <h1 class="list__heading"><span>Dostępne filmy</span></h1>
+        </div> 
+
+        <div class="list__container-2">
           <h1 class="list__heading"><span>Znajdź film</span></h1>
           <input class="input" placeholder="czego szukasz?" type="text" spellcheck="false"/>
           <button id="findButton" class="main__btn"><a href="#">Szukaj</a></button>
         </div>
+
       </div>
 
 
