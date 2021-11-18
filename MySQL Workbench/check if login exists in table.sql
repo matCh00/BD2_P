@@ -1,0 +1,1 @@
+SELECT EXISTS (SELECT * FROM database_course.login_password WHERE login="user");

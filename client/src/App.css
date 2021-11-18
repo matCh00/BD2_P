@@ -325,6 +325,21 @@
 
 .manage__container h1 {
   font-size: 60px;
+  margin-bottom: 60px;
+  color: #fff;
+  background: #ee0979;
+  background: -webkit-linear-gradient(to right,#ff6a00,#ee0979);
+  background: linear-gradient(to right,#ff6a00,#ee0979);
+  background-size: 100%;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -mo-text-fill-color: transparent;
+}
+
+
+.manage__container h2 {
+  font-size: 40px;
   margin-bottom: 30px;
   color: #fff;
   background: #ee0979;
@@ -335,6 +350,11 @@
   -moz-background-clip: text;
   -webkit-text-fill-color: transparent;
   -mo-text-fill-color: transparent;
+}
+
+
+.manage__container input {
+  margin-bottom: 50px;
 }
 
 

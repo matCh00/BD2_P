@@ -47,7 +47,7 @@ app.post("/api/insert", (req, res) => {
 });
 
 
-// usuwanie recenzji
+// usuwanie filmu v1
 app.delete(`/api/delete/:movieName`, (req, res) => {
 
     const name = req.params.movieName;
@@ -59,6 +59,20 @@ app.delete(`/api/delete/:movieName`, (req, res) => {
         if (err) console.log(err);
     });
 });
+
+
+// usuwanie filmu v2
+app.post("/api/delete", (req, res) => {
+
+    const movieName = req.body.movieName;
+  
+    const sqlDelete = 
+    "DELETE FROM movie_reviews WHERE movieName = ?";
+  
+      db.query(sqlDelete, movieName, (err, result) => {
+          if (err) console.log(err);
+      });
+  });
 
 
 // aktualizowanie recenzji
@@ -79,4 +93,33 @@ app.put("/api/update", (req, res) => {
 // nasłuchiwanie
 app.listen(3001, () => {
     console.log("running on port 3001");
+});
+
+
+
+// rejestracja, login jest unikalny
+app.post("/api/register", (req, res) => {
+
+    const login = req.body.login;
+    const password = req.body.password;
+
+    const sqlInsert = "INSERT IGNORE INTO login_password (login, password) VALUES (?,?)";
+
+    db.query(sqlInsert, [login, password], (err, result) => {
+        console.log(result);
+    });
+});
+
+
+// logowanie
+app.post("/api/login", (req, res) => {
+
+    const login = req.body.login;
+    const password = req.body.password;
+
+    const sqlSelect = "IF EXISTS (SELECT * FROM login_password WHERE (login, password) VALUES (?,?), !!!!true, !!!!false)";
+
+    db.query(sqlSelect, [login, password], (err, result) => {
+        console.log(result);
+    });
 });

@@ -19,6 +19,12 @@ function App() {
   // nowa recenzja
   const [newReview, setNewReview] = React.useState("");
 
+  // login (pole tekstowe)
+  const [login, setLogin] = React.useState("");
+
+  // hasło (pole tekstowe)
+  const [password, setPassword] = React.useState("");
+
 
 
   // wyświetlanie danych na frontendzie
@@ -31,6 +37,7 @@ function App() {
 
 
   // przesłyłanie danych z frontendu (strona) do backendu (bazy danych)
+  // dodanie filmu z recenzją
   const submitReview = () => {
 
     Axios.post("http://localhost:3001/api/insert", {
@@ -48,11 +55,18 @@ function App() {
 
 
 
-  // usuwanie rezencji
+  // usuwanie filmu v1
   const deleteReview = (movie) => {
 
     Axios.delete(`http://localhost:3001/api/delete/${movie}`);
   };
+
+
+
+  // usuwanie filmu v2
+  const deleteMovie = () => {
+    Axios.post("http://localhost:3001/api/delete", {movieName: movieName});;
+  }
 
 
 
@@ -61,9 +75,20 @@ function App() {
 
     Axios.put("http://localhost:3001/api/update", {
       movieName: movie,
-      movieReview: newReview,
+      movieReview: newReview
     });
     setNewReview("");
+  };
+
+
+
+  // rejestracja
+  const register = () => {
+
+    Axios.post("http://localhost:3001/api/register", {
+      login: login, 
+      password: password
+    });
   };
 
 
@@ -151,8 +176,12 @@ function App() {
         <div class="manage__container">
           <h1>Zarządzaj filmami</h1>
           <div>
-            <button id="addButton" class="main__btn"><a href="#">Dodaj</a></button>
-            <button id="deleteButton" class="main__btn"><a href="#">Usuń</a></button>
+            <h1 class="list__heading"><span>Nazwa</span></h1>
+            <input class="input" spellcheck="false" placeholder="nazwa filmu" name="movieName" onChange={(e)=> {setMovieName(e.target.value)}} />
+            <h1 class="list__heading"><span>Recenzja</span></h1>
+            <input class="input" spellcheck="false" placeholder="recenzja" name="review" onChange={(e)=> {setReview(e.target.value)}} /> 
+            <button id="addButton" class="main__btn" onClick={submitReview}><a href="#">Dodaj</a></button>
+            <button id="deleteButton" class="main__btn" onClick={deleteMovie}><a href="#">Usuń</a></button>
             <button id="editButton" class="main__btn"><a href="#">Edytuj</a></button>
           </div>
         </div>
@@ -163,28 +192,13 @@ function App() {
       <div class="login" id="login">
         <div class="login__container">
           <h1>Zaloguj się lub załóż konto</h1>
-          <input class="input" placeholder="email" type="text" spellcheck="false"/>
-          <input class="input" placeholder="hasło" type="text" spellcheck="false"/>
+          <input class="input" placeholder="login" type="text" spellcheck="false" name="login" onChange={(e)=> {setLogin(e.target.value)}}/>
+          <input class="input" placeholder="hasło" type="text" spellcheck="false" name="password" onChange={(e)=> {setPassword(e.target.value)}}/>
           <button id="loginButton" class="main__btn"><a href="#">Zaloguj się</a></button>
-          <button id="registerButton" class="main__btn"><a href="#">Załóż nowe konto</a></button>
+          <button id="registerButton" class="main__btn" onClick={register}><a href="#">Załóż nowe konto</a></button>
         </div>
       </div>
 
-
-      <h1> Wypożyczalnia filmów </h1>   
-
-        <div className="form">
-          <label> Movie name: </label>
-          <input type="text" name="movieName" onChange={(e)=> {setMovieName(e.target.value)}} />
-
-          <label> Review: </label>
-          <input type="text" name="review" onChange={(e)=> {setReview(e.target.value)}} /> 
-
-          <button onClick={submitReview}> Submit </button>
-
-          
-
-        </div>
     </div>
   )
 }
