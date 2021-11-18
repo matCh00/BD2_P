@@ -3,9 +3,9 @@
 [wygląd strony](https://www.youtube.com/watch?v=3-2Pj5hxwrw)     
 [frontend - backend 1](https://www.youtube.com/watch?v=T8mqZZ0r-RA)     
 [frontend - backend 2](https://www.youtube.com/watch?v=3YrOOia3-mo)     
-[frontend - backend 3](https://www.youtube.com/watch?v=_S2GKnFpdtE)
-[logowanie i rejestracja 1](https://www.youtube.com/watch?v=W-sZo6Gtx_E)
-[logowanie i rejestracja 2](https://www.youtube.com/watch?v=sTHWNPVNvm8)
+[frontend - backend 3](https://www.youtube.com/watch?v=_S2GKnFpdtE)     
+[rejestracja i logowanie 1](https://www.youtube.com/watch?v=W-sZo6Gtx_E)     
+[rejestracja i logowanie 2](https://www.youtube.com/watch?v=sTHWNPVNvm8)     
 
 [client App.js](https://github.com/matCh00/DataBase_Course/blob/main/client/src/App.js)     
 [client App.css](https://github.com/matCh00/DataBase_Course/blob/main/client/src/App.css)     
