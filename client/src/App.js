@@ -29,8 +29,10 @@ function App() {
   const [loginStatus, setLoginStatus] = React.useState("");
 
 
+  Axios.defaults.withCredentials = true;
 
-  // przesył danych
+
+  // wyśiwtlenie listy po odświeżeniu strony
   useEffect(() => {
     Axios.get("http://localhost:3001/api/get").then((response) => {
       setMovieList(response.data);
@@ -47,7 +49,7 @@ function App() {
       movieReview: review
     });
 
-    // aktualizacja bez potrzeby odświerzania strony
+    // aktualizacja bez potrzeby odświeżania strony
     setMovieList([
       ...movieReviewList, 
       {movieName: movieName, movieReview: review},
@@ -72,7 +74,7 @@ function App() {
 
 
 
-  // aktualizacja rezencji
+  // aktualizacja recenzji
   const updateReview = (movie) => {
 
     Axios.put("http://localhost:3001/api/update", {
@@ -86,6 +88,8 @@ function App() {
 
   // rejestracja
   const registerFunction = () => {
+
+    setLoginStatus(" ");
 
     Axios.post("http://localhost:3001/api/register", {
       login: login, 
@@ -113,6 +117,18 @@ function App() {
       }
     });
   };
+
+
+
+  // pozostajemy zalogowani po odświeżeniu strony
+  useEffect(() => {
+    Axios.get("http://localhost:3001/login").then((response) => {
+
+      if (response.data.loggedIn == true) {
+        setLoginStatus(response.data.user[0].login);
+      } 
+    });
+  }, []);
 
 
 

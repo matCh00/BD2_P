@@ -2,7 +2,12 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
 
+// bezpieczeństwo - haszowanie haseł w bazie danych
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 // serwer MySQL
 const mysql = require("mysql");
@@ -14,9 +19,25 @@ const db = mysql.createPool({
 });
 
 
-app.use(cors());
-app.use(express.json())
+app.use(cors({
+    origin: ["http://localhost:3000"],
+    methods: ["GET", "POST"],
+    credentials: true
+}));
+app.use(express.json());
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(cookieParser());
+app.use(
+    session ({
+        key: "userId",
+        secret: "subscribe",
+        resave: false,
+        saveUnitialized: false,
+        cookie: {
+            expires: 60 * 60 * 24
+        }
+    })
+);
 
 
 
@@ -109,10 +130,18 @@ app.post("/api/register", (req, res) => {
     const login = req.body.login;
     const password = req.body.password;
 
-    const sqlInsert = "INSERT IGNORE INTO login_password (login, password) VALUES (?,?)";
+    // haszowanie haseł
+    bcrypt.hash(password, saltRounds, (err, hash) => {
 
-    db.query(sqlInsert, [login, password], (err, result) => {
-        console.log(result);
+        if (err) {
+            console.log(err);
+        }
+
+        const sqlInsert = "INSERT IGNORE INTO login_password (login, password) VALUES (?,?)";
+
+        db.query(sqlInsert, [login, hash], (err, result) => {
+            console.log(result);
+        });
     });
 });
 
@@ -124,22 +153,48 @@ app.post("/api/login", (req, res) => {
     const login = req.body.login;
     const password = req.body.password;
 
-    const sqlSelect = "SELECT * FROM login_password WHERE login = ? AND password = ?";
+    // sprawdzenie czy istnieje użytkownik w bazie
+    const sqlSelect = "SELECT * FROM login_password WHERE login = ?";
 
-    db.query(sqlSelect, [login, password], (err, result) => {
+    db.query(sqlSelect, login, (err, result) => {
 
         if (err) {
            res.send({err: err})
         } 
         else {
 
-            // sprawdzenie czy istnieje użytkownik w bazie
+            // sprawdzenie haszowanego hasła
             if (result.length > 0) {
-                res.send(result)
+                bcrypt.compare(password, result[0].password, (error, response) => {
+
+                    if (response) {
+                        req.session.user = result;
+                        console.log(req.session.user);
+
+                        res.send(result);
+                    }
+                    else {
+                        res.send({message: "Złe hasło"});
+                    }
+                });
             }
             else {
-                res.send({message: "Zły login lub hasło"})
+                res.send({message: "Urzytkownik nie istnieje"});
             }
         }
     });
+});
+
+
+
+// odświeżanie strony po zalogowaniu
+app.get("/login", (req, res) => {
+
+    // jeżeli jest zalogowany urzytkownik
+    if (req.session.user) {
+        res.send({loggedIn: true, user: req.session.user});
+    }
+    else {
+        res.send({loggedIn: false});
+    }
 });
