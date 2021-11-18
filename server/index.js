@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 
-// dane do serwera MySQL
+// serwer MySQL
 const mysql = require("mysql");
 const db = mysql.createPool({
     host: 'localhost',
@@ -19,7 +19,15 @@ app.use(express.json())
 app.use(bodyParser.urlencoded({extended: true}));
 
 
-// przesłanie danych z backendu do frontendu
+
+// nasłuchiwanie
+app.listen(3001, () => {
+    console.log("running on port 3001");
+});
+
+
+
+// wyświetlanie listy filmów 
 app.get("/api/get", (req, res) => {
 
     const sqlSelect = "SELECT * FROM movie_reviews";
@@ -32,7 +40,8 @@ app.get("/api/get", (req, res) => {
 });
 
 
-// zapis danych ze strony w bazie danych
+
+// dodawanie filmu wraz z opinią
 app.post("/api/insert", (req, res) => {
 
     const movieName = req.body.movieName;
@@ -45,6 +54,7 @@ app.post("/api/insert", (req, res) => {
         console.log(result);
     });
 });
+
 
 
 // usuwanie filmu v1
@@ -61,6 +71,7 @@ app.delete(`/api/delete/:movieName`, (req, res) => {
 });
 
 
+
 // usuwanie filmu v2
 app.post("/api/delete", (req, res) => {
 
@@ -73,6 +84,7 @@ app.post("/api/delete", (req, res) => {
           if (err) console.log(err);
       });
   });
+
 
 
 // aktualizowanie recenzji
@@ -90,14 +102,8 @@ app.put("/api/update", (req, res) => {
 });
 
 
-// nasłuchiwanie
-app.listen(3001, () => {
-    console.log("running on port 3001");
-});
 
-
-
-// rejestracja, login jest unikalny
+// rejestracja
 app.post("/api/register", (req, res) => {
 
     const login = req.body.login;
@@ -111,15 +117,29 @@ app.post("/api/register", (req, res) => {
 });
 
 
+
 // logowanie
 app.post("/api/login", (req, res) => {
 
     const login = req.body.login;
     const password = req.body.password;
 
-    const sqlSelect = "IF EXISTS (SELECT * FROM login_password WHERE (login, password) VALUES (?,?), !!!!true, !!!!false)";
+    const sqlSelect = "SELECT * FROM login_password WHERE login = ? AND password = ?";
 
     db.query(sqlSelect, [login, password], (err, result) => {
-        console.log(result);
+
+        if (err) {
+           res.send({err: err})
+        } 
+        else {
+
+            // sprawdzenie czy istnieje użytkownik w bazie
+            if (result.length > 0) {
+                res.send(result)
+            }
+            else {
+                res.send({message: "Zły login lub hasło"})
+            }
+        }
     });
 });

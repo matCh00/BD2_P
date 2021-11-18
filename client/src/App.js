@@ -25,9 +25,12 @@ function App() {
   // hasło (pole tekstowe)
   const [password, setPassword] = React.useState("");
 
+  // status logowania
+  const [loginStatus, setLoginStatus] = React.useState("");
 
 
-  // wyświetlanie danych na frontendzie
+
+  // przesył danych
   useEffect(() => {
     Axios.get("http://localhost:3001/api/get").then((response) => {
       setMovieList(response.data);
@@ -36,7 +39,6 @@ function App() {
 
 
 
-  // przesłyłanie danych z frontendu (strona) do backendu (bazy danych)
   // dodanie filmu z recenzją
   const submitReview = () => {
 
@@ -83,11 +85,32 @@ function App() {
 
 
   // rejestracja
-  const register = () => {
+  const registerFunction = () => {
 
     Axios.post("http://localhost:3001/api/register", {
       login: login, 
       password: password
+    }).then((response) => {
+      console.log(response);
+    });
+  };
+
+
+
+  // logowanie
+  const loginFunction = () => {
+
+    Axios.post("http://localhost:3001/api/login", {
+      login: login, 
+      password: password
+    }).then((response) => {
+
+      if (response.data.message) {
+        setLoginStatus(response.data.message);
+      }
+      else {
+        setLoginStatus(response.data[0].login);
+      }
     });
   };
 
@@ -176,9 +199,9 @@ function App() {
         <div class="manage__container">
           <h1>Zarządzaj filmami</h1>
           <div>
-            <h1 class="list__heading"><span>Nazwa</span></h1>
+            <h2 class="list__heading"><span>Nazwa</span></h2>
             <input class="input" spellcheck="false" placeholder="nazwa filmu" name="movieName" onChange={(e)=> {setMovieName(e.target.value)}} />
-            <h1 class="list__heading"><span>Recenzja</span></h1>
+            <h2 class="list__heading"><span>Recenzja</span></h2>
             <input class="input" spellcheck="false" placeholder="recenzja" name="review" onChange={(e)=> {setReview(e.target.value)}} /> 
             <button id="addButton" class="main__btn" onClick={submitReview}><a href="#">Dodaj</a></button>
             <button id="deleteButton" class="main__btn" onClick={deleteMovie}><a href="#">Usuń</a></button>
@@ -194,8 +217,11 @@ function App() {
           <h1>Zaloguj się lub załóż konto</h1>
           <input class="input" placeholder="login" type="text" spellcheck="false" name="login" onChange={(e)=> {setLogin(e.target.value)}}/>
           <input class="input" placeholder="hasło" type="text" spellcheck="false" name="password" onChange={(e)=> {setPassword(e.target.value)}}/>
-          <button id="loginButton" class="main__btn"><a href="#">Zaloguj się</a></button>
-          <button id="registerButton" class="main__btn" onClick={register}><a href="#">Załóż nowe konto</a></button>
+          <div>
+            <button id="loginButton" class="main__btn" onClick={loginFunction}><a href="#login">Zaloguj się</a></button>
+            <button id="registerButton" class="main__btn" onClick={registerFunction}><a href="#login">Załóż konto</a></button>
+          </div>
+          <h2>{loginStatus}</h2>
         </div>
       </div>
 

@@ -163,6 +163,11 @@
 }
 
 
+/* podświetlenie */
+.highlight {
+  border-bottom: 4px solid rgb(132, 0, 255);
+}
+
 
 /* scrollbar */
 
@@ -253,11 +258,6 @@
 }
 
 
-.highlight {
-  border-bottom: 4px solid rgb(132, 0, 255);
-}
-
-
 
 /* wypożyczenie filmu */
 
@@ -304,7 +304,8 @@
 .manage {
   background: #000000;
   background: linear-gradient(to right, #161616, #000000);
-  padding: 300px 0;
+  padding: 200px 0;
+  padding-top: 150px;
 }
 
 
@@ -325,7 +326,7 @@
 
 .manage__container h1 {
   font-size: 60px;
-  margin-bottom: 60px;
+  margin-bottom: 40px;
   color: #fff;
   background: #ee0979;
   background: -webkit-linear-gradient(to right,#ff6a00,#ee0979);
@@ -341,6 +342,7 @@
 .manage__container h2 {
   font-size: 40px;
   margin-bottom: 30px;
+  margin-top: 60px;
   color: #fff;
   background: #ee0979;
   background: -webkit-linear-gradient(to right,#ff6a00,#ee0979);
@@ -358,13 +360,19 @@
 }
 
 
+.manage__container button {
+  margin-top: 80px;
+}
+
+
 
 /* logowanie */
 
 .login {
   background: #000000;
   background: linear-gradient(to right, #000000, #161616);
-  padding: 300px 0;
+  padding: 200px 0;
+  padding-top: 150px;
 }
 
 
@@ -385,7 +393,7 @@
 
 .login__container h1 {
   font-size: 60px;
-  margin-bottom: 30px;
+  margin-bottom: 80px;
   color: #fff;
   background: #ee0979;
   background: -webkit-linear-gradient(to right,#ff6a00,#ee0979);
@@ -395,6 +403,28 @@
   -moz-background-clip: text;
   -webkit-text-fill-color: transparent;
   -mo-text-fill-color: transparent;
+}
+
+
+.login__container h2 {
+  font-size: 30px;
+  margin-bottom: 30px;
+  margin-top: 30px;
+  color: #fff;
+  background: #ee0979;
+  background: -webkit-linear-gradient(to right,#ff6a00,#ee0979);
+  background: linear-gradient(to right,#ff6a00,#ee0979);
+  background-size: 100%;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -mo-text-fill-color: transparent;
+}
+
+
+.login__container button {
+  margin-top: 60px;
+  margin-bottom: 60px;
 }
 
 
