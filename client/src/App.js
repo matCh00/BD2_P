@@ -28,6 +28,15 @@ function App() {
   // status zarządzania filmami
   const [manageStatus, setManageStatus] = React.useState("");
 
+  // data wypożyczenia
+  const [dateBegin, setBeginDate] = React.useState(new Date(2000, 1, 1));
+
+  // data oddania
+  const [dateEnd, setEndDate] = React.useState(new Date(2000, 1, 1));
+
+  // status wypożyczenia
+  const [borrowStatus, setBorrowStatus] = React.useState("");
+
 
   Axios.defaults.withCredentials = true;
 
@@ -154,6 +163,33 @@ function App() {
 
 
 
+   // wypożyczenie filmu
+   const borrowMovie = () => {
+
+    if (movieName.length == 0) {
+      setBorrowStatus("wpisz nazwę");
+    }
+
+    else if (loginStatus.length == 0) {
+      setBorrowStatus("zaloguj się");
+    }
+
+    // aktualizować recenzję mogą tylko zalogowani użytkownicy
+    else if (loginStatus.length > 0) {
+
+      Axios.post("http://localhost:3001/api/rent", {
+        movieName: movieName,
+        dateBegin: dateBegin,
+        dateEnd: dateEnd,
+        login: login
+      });
+
+      setBorrowStatus("wypożyczono");
+    }
+  };
+
+
+
   return ( 
     <div className="App">
 
@@ -222,7 +258,14 @@ function App() {
       <div class="borrow" id="borrow">
         <div class="borrow__container">
           <h1>Wypożycz film</h1>
-          <button id="borrowButton" class="main__btn"><a href="#borrow">Wypożycz</a></button>
+          <h2>Data wypożyczenia</h2>
+          <input class="input" type="text" spellcheck="false" placeholder="nazwa filmu" name="movieName" onChange={(e)=> {setMovieName(e.target.value)}} />
+          <h2>Data wypożyczenia</h2>
+          <input class="input" type="date" spellcheck="false" name="dateBegin" onChange={(e)=> {setBeginDate(e.target.value)}} />
+          <h2>Data oddania</h2>
+          <input class="input" type="date" spellcheck="false" name="dateEnd" onChange={(e)=> {setEndDate(e.target.value)}} />
+          <button id="borrowButton" class="main__btn" onClick={borrowMovie}><a href="#borrow">Wypożycz</a></button>
+          <h3>{borrowStatus}</h3>
         </div>
       </div>
 
@@ -252,7 +295,7 @@ function App() {
         <div class="login__container">
           <h1>Zaloguj się lub załóż konto</h1>
           <input class="input" placeholder="login" type="text" spellcheck="false" name="login" onChange={(e)=> {setLogin(e.target.value)}}/>
-          <input class="input" placeholder="hasło" type="text" spellcheck="false" name="password" onChange={(e)=> {setPassword(e.target.value)}}/>
+          <input class="input" placeholder="hasło" type="password" spellcheck="false" name="password" onChange={(e)=> {setPassword(e.target.value)}}/>
           <div>
             <button id="loginButton" class="main__btn" onClick={loginFunction}><a href="#login">Zaloguj się</a></button>
             <button id="registerButton" class="main__btn" onClick={registerFunction}><a href="#login">Załóż konto</a></button>

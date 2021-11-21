@@ -198,3 +198,21 @@ app.get("/login", (req, res) => {
         res.send({loggedIn: false});
     }
 });
+
+
+
+// dodawanie wypożyczenia
+app.post("/api/rent", (req, res) => {
+
+    const movieName = req.body.movieName;
+    const dateBegin = req.body.dateBegin;
+    const dateEnd = req.body.dateEnd;
+    const login = req.body.login;
+
+    const sqlInsert = 
+    "INSERT INTO movie_rentals (movieName, dateBegin, dateEnd, userLogin) VALUES (?,?,?,?)";
+
+    db.query(sqlInsert, [movieName, dateBegin, dateEnd, login], (err, result) => {
+        console.log(result);
+    });
+});

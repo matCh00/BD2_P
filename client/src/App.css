@@ -264,7 +264,8 @@
 .borrow {
   background: #000000;
   background: linear-gradient(to right, #000000, #161616);
-  padding: 300px 0;
+  padding: 200px 0;
+  padding-top: 150px;
 }
 
 
@@ -285,7 +286,49 @@
 
 .borrow__container h1 {
   font-size: 60px;
+  margin-bottom: 50px;
+  color: #fff;
+  background: #ee0979;
+  background: -webkit-linear-gradient(to right,#ff6a00,#ee0979);
+  background: linear-gradient(to right,#ff6a00,#ee0979);
+  background-size: 100%;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -mo-text-fill-color: transparent;
+}
+
+
+.borrow__container h2 {
+  font-size: 40px;
+  margin-bottom: 20px;
+  margin-top: 30px;
+  color: #fff;
+  background: #ee0979;
+  background: -webkit-linear-gradient(to right,#ff6a00,#ee0979);
+  background: linear-gradient(to right,#ff6a00,#ee0979);
+  background-size: 100%;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -mo-text-fill-color: transparent;
+}
+
+
+.borrow__container input {
+  margin-bottom: 50px;
+}
+
+
+.borrow__container button {
+  margin-top: 40px;
+}
+
+
+.borrow__container h3 {
+  font-size: 30px;
   margin-bottom: 30px;
+  margin-top: 60px;
   color: #fff;
   background: #ee0979;
   background: -webkit-linear-gradient(to right,#ff6a00,#ee0979);
