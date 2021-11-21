@@ -53,21 +53,27 @@ function App() {
   // dodanie filmu z recenzją
   const submitReview = () => {
 
-    // dodawać mogą jedynie zalogowani urzytkownicy
-    if (loginStatus.length > 0) {
+    // dodawać filmy może tylko admin
+    if (loginStatus == "admin") {
 
       Axios.post("http://localhost:3001/api/insert", {
         movieName: movieName, 
         movieReview: review
       });
 
+      setManageStatus("dodano");
+
       // aktualizacja bez potrzeby odświeżania strony
       setMovieList([
         ...movieReviewList, 
         {movieName: movieName, movieReview: review},
       ]);
+    }
 
-      setManageStatus("dodano");
+    // jeżeli nie jest to admin
+    else if (loginStatus.length > 0) {
+
+      setManageStatus("brak uprawnień");
     }
     else {
       setManageStatus("zaloguj się");
@@ -84,8 +90,14 @@ function App() {
       Axios.post("http://localhost:3001/api/delete", {movieName: movieName});
       setManageStatus("usunięto");
     }
+
+    // jeżeli nie jest to admin
+    else if (loginStatus.length > 0) {
+
+      setManageStatus("brak uprawnień");
+    }
     else {
-      setManageStatus("brak uprawnień")
+      setManageStatus("zaloguj się");
     }
   }
 
@@ -163,8 +175,8 @@ function App() {
 
 
 
-   // wypożyczenie filmu
-   const borrowMovie = () => {
+  // wypożyczenie filmu
+  const borrowMovie = () => {
 
     if (movieName.length == 0) {
       setBorrowStatus("wpisz nazwę");
@@ -174,7 +186,7 @@ function App() {
       setBorrowStatus("zaloguj się");
     }
 
-    // aktualizować recenzję mogą tylko zalogowani użytkownicy
+    // wypożyczać film mogą tylko zalogowani użytkownicy
     else if (loginStatus.length > 0) {
 
       Axios.post("http://localhost:3001/api/rent", {
