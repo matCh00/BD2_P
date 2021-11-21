@@ -361,7 +361,23 @@
 
 
 .manage__container button {
+  margin-top: 40px;
+}
+
+
+.manage__container h3 {
+  font-size: 30px;
+  margin-bottom: 30px;
   margin-top: 80px;
+  color: #fff;
+  background: #ee0979;
+  background: -webkit-linear-gradient(to right,#ff6a00,#ee0979);
+  background: linear-gradient(to right,#ff6a00,#ee0979);
+  background-size: 100%;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -mo-text-fill-color: transparent;
 }
 
 

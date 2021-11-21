@@ -16,9 +16,6 @@ function App() {
   // lista filmów wraz z recenzjami
   const [movieReviewList, setMovieList] = React.useState([]);
 
-  // nowa recenzja
-  const [newReview, setNewReview] = React.useState("");
-
   // login (pole tekstowe)
   const [login, setLogin] = React.useState("");
 
@@ -27,6 +24,9 @@ function App() {
 
   // status logowania
   const [loginStatus, setLoginStatus] = React.useState("");
+
+  // status zarządzania filmami
+  const [manageStatus, setManageStatus] = React.useState("");
 
 
   Axios.defaults.withCredentials = true;
@@ -44,17 +44,25 @@ function App() {
   // dodanie filmu z recenzją
   const submitReview = () => {
 
-    Axios.post("http://localhost:3001/api/insert", {
-      movieName: movieName, 
-      movieReview: review
-    });
+    // jeżeli jesteśmy zalogowani
+    if (loginStatus.length > 0) {
 
-    // aktualizacja bez potrzeby odświeżania strony
-    setMovieList([
-      ...movieReviewList, 
-      {movieName: movieName, movieReview: review},
-    ]);
+      Axios.post("http://localhost:3001/api/insert", {
+        movieName: movieName, 
+        movieReview: review
+      });
 
+      // aktualizacja bez potrzeby odświeżania strony
+      setMovieList([
+        ...movieReviewList, 
+        {movieName: movieName, movieReview: review},
+      ]);
+
+      setManageStatus("dodano");
+    }
+    else {
+      setManageStatus("zaloguj się");
+    }
   };
 
 
@@ -69,19 +77,41 @@ function App() {
 
   // usuwanie filmu v2
   const deleteMovie = () => {
-    Axios.post("http://localhost:3001/api/delete", {movieName: movieName});;
+
+    // jeżeli jest zalogowany admin
+    if (loginStatus == "admin") {
+      Axios.post("http://localhost:3001/api/delete", {movieName: movieName});
+      setManageStatus("usunięto");
+    }
+    else {
+      setManageStatus("brak uprawnień")
+    }
   }
 
 
 
   // aktualizacja recenzji
-  const updateReview = (movie) => {
+  const editReview = () => {
 
-    Axios.put("http://localhost:3001/api/update", {
-      movieName: movie,
-      movieReview: newReview
-    });
-    setNewReview("");
+    // jeżeli jest to admin
+    if (loginStatus == "admin") {
+
+      Axios.put("http://localhost:3001/api/update", {
+        movieName: movieName,
+        movieReview: review
+      });
+
+      setManageStatus("zaktualizowano");
+    }
+
+    // jeżeli nie jest to admin
+    else if (loginStatus.length > 0) {
+
+      setManageStatus("brak uprawnień");
+    }
+    else {
+      setManageStatus("zaloguj się");
+    }
   };
 
 
@@ -180,11 +210,6 @@ function App() {
                 <h2> {val.movieName} </h2>
                 <p> {val.movieReview} </p>
 
-                <button onClick={() => {deleteReview(val.movieName)}}> Delete </button>
-
-                <input spellcheck="false" type="text" id="updateInput" onChange={(e) => {setNewReview(e.target.value)}}/>
-
-                <button onClick={() => {updateReview(val.movieName)}}> Update </button>
 
               </div>
             )
@@ -205,7 +230,7 @@ function App() {
       <div class="borrow" id="borrow">
         <div class="borrow__container">
           <h1>Wypożycz film</h1>
-          <button id="borrowButton" class="main__btn"><a href="#">Wypożycz</a></button>
+          <button id="borrowButton" class="main__btn"><a href="#borrow">Wypożycz</a></button>
         </div>
       </div>
 
@@ -218,11 +243,14 @@ function App() {
             <h2 class="list__heading"><span>Nazwa</span></h2>
             <input class="input" spellcheck="false" placeholder="nazwa filmu" name="movieName" onChange={(e)=> {setMovieName(e.target.value)}} />
             <h2 class="list__heading"><span>Recenzja</span></h2>
-            <input class="input" spellcheck="false" placeholder="recenzja" name="review" onChange={(e)=> {setReview(e.target.value)}} /> 
-            <button id="addButton" class="main__btn" onClick={submitReview}><a href="#">Dodaj</a></button>
-            <button id="deleteButton" class="main__btn" onClick={deleteMovie}><a href="#">Usuń</a></button>
-            <button id="editButton" class="main__btn"><a href="#">Edytuj</a></button>
+            <input class="input" spellcheck="false" placeholder="recenzja" name="review" onChange={(e)=> {setReview(e.target.value)}} />
+            <div>
+              <button id="addButton" class="main__btn" onClick={submitReview}><a href="#manage">Dodaj</a></button>
+              <button id="deleteButton" class="main__btn" onClick={deleteMovie}><a href="#manage">Usuń</a></button>
+              <button id="editButton" class="main__btn" onClick={editReview}><a href="#manage">Edytuj</a></button>
+            </div>
           </div>
+          <h3>{manageStatus}</h3>
         </div>
       </div>
 
@@ -240,7 +268,6 @@ function App() {
           <h2>{loginStatus}</h2>
         </div>
       </div>
-
     </div>
   )
 }
