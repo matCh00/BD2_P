@@ -44,7 +44,7 @@ function App() {
   // dodanie filmu z recenzją
   const submitReview = () => {
 
-    // jeżeli jesteśmy zalogowani
+    // dodawać mogą jedynie zalogowani urzytkownicy
     if (loginStatus.length > 0) {
 
       Axios.post("http://localhost:3001/api/insert", {
@@ -67,18 +67,10 @@ function App() {
 
 
 
-  // usuwanie filmu v1
-  const deleteReview = (movie) => {
-
-    Axios.delete(`http://localhost:3001/api/delete/${movie}`);
-  };
-
-
-
-  // usuwanie filmu v2
+  // usuwanie filmu 
   const deleteMovie = () => {
 
-    // jeżeli jest zalogowany admin
+    // usuwać film może tylko admin
     if (loginStatus == "admin") {
       Axios.post("http://localhost:3001/api/delete", {movieName: movieName});
       setManageStatus("usunięto");
@@ -93,7 +85,7 @@ function App() {
   // aktualizacja recenzji
   const editReview = () => {
 
-    // jeżeli jest to admin
+    // aktualizować recenzję może tylko admin
     if (loginStatus == "admin") {
 
       Axios.put("http://localhost:3001/api/update", {
