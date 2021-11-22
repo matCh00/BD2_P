@@ -51,7 +51,7 @@ app.listen(3001, () => {
 // wyświetlanie listy filmów 
 app.get("/api/get", (req, res) => {
 
-    const sqlSelect = "SELECT * FROM movie_reviews";
+    const sqlSelect = "SELECT * FROM movies";
 
     db.query(sqlSelect, (err, result) => {
         
@@ -66,40 +66,27 @@ app.get("/api/get", (req, res) => {
 app.post("/api/insert", (req, res) => {
 
     const movieName = req.body.movieName;
-    const movieReview = req.body.movieReview;
+    const movieRating = req.body.movieRating;
+    const movieType = req.body.movieType;
+    const movieYear = req.body.movieYear;
 
     const sqlInsert = 
-    "INSERT INTO movie_reviews (movieName, movieReview) VALUES (?,?)";
+    "INSERT INTO movies (movieName, rating, type, year) VALUES (?,?,?,?)";
 
-    db.query(sqlInsert, [movieName, movieReview], (err, result) => {
+    db.query(sqlInsert, [movieName, movieRating, movieType, movieYear], (err, result) => {
         console.log(result);
     });
 });
 
 
 
-// usuwanie filmu v1
-app.delete(`/api/delete/:movieName`, (req, res) => {
-
-    const name = req.params.movieName;
-
-    const sqlDelete = 
-    "DELETE FROM movie_reviews WHERE movieName = ?";
-
-    db.query(sqlDelete, name, (err, result) => {
-        if (err) console.log(err);
-    });
-});
-
-
-
-// usuwanie filmu v2
+// usuwanie filmu
 app.post("/api/delete", (req, res) => {
 
     const movieName = req.body.movieName;
   
     const sqlDelete = 
-    "DELETE FROM movie_reviews WHERE movieName = ?";
+    "DELETE FROM movies WHERE movieName = ?";
   
       db.query(sqlDelete, movieName, (err, result) => {
           if (err) console.log(err);
@@ -108,16 +95,16 @@ app.post("/api/delete", (req, res) => {
 
 
 
-// aktualizowanie recenzji
+// aktualizowanie oceny filmu
 app.put("/api/update", (req, res) => {
 
     const name = req.body.movieName;
-    const review = req.body.movieReview;
+    const movieRating = req.body.movieRating;
 
     const sqlUpdate = 
-    "UPDATE movie_reviews SET movieReview = ? WHERE movieName = ?";
+    "UPDATE movies SET rating = ? WHERE movieName = ?";
 
-    db.query(sqlUpdate, [review, name], (err, result) => {
+    db.query(sqlUpdate, [movieRating, name], (err, result) => {
         if (err) console.log(err);
     });
 });

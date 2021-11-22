@@ -7,19 +7,25 @@ import "./App.css";
 
 function App() {
 
-  // nazwa filmu (pole tekstowe)
+  // nazwa filmu
   const [movieName, setMovieName] = React.useState("");
 
-  // recenzja (pole tekstowe)
-  const [review, setReview] = React.useState("");
+  // recenzja filmu
+  const [movieRating, setMovieRating] = React.useState(0);
+
+  // typ filmu
+  const [movieType, setMovieType] = React.useState("");
+
+  // rok produkcji filmu
+  const [movieYear, setMovieYear] = React.useState(0);
 
   // lista filmów wraz z recenzjami
-  const [movieReviewList, setMovieList] = React.useState([]);
+  const [movieList, setMovieList] = React.useState([]);
 
-  // login (pole tekstowe)
+  // login
   const [login, setLogin] = React.useState("");
 
-  // hasło (pole tekstowe)
+  // hasło
   const [password, setPassword] = React.useState("");
 
   // status logowania
@@ -35,7 +41,7 @@ function App() {
   const [dateEnd, setEndDate] = React.useState(new Date(2000, 1, 1));
 
   // status wypożyczenia
-  const [borrowStatus, setBorrowStatus] = React.useState("");
+  const [rentStatus, setRentStatus] = React.useState("");
 
 
   Axios.defaults.withCredentials = true;
@@ -51,32 +57,46 @@ function App() {
 
 
   // dodanie filmu z recenzją
-  const submitReview = () => {
+  const submitMovie = () => {
 
-    // dodawać filmy może tylko admin
-    if (loginStatus == "admin") {
+    if (movieRating >= 0 && movieRating <= 10) {
 
-      Axios.post("http://localhost:3001/api/insert", {
-        movieName: movieName, 
-        movieReview: review
-      });
+      if (movieYear >= 1900 && movieYear <= 2022) {
 
-      setManageStatus("dodano");
+        // dodawać filmy może tylko admin
+        if (loginStatus == "admin") {
 
-      // aktualizacja bez potrzeby odświeżania strony
-      setMovieList([
-        ...movieReviewList, 
-        {movieName: movieName, movieReview: review},
-      ]);
-    }
+          Axios.post("http://localhost:3001/api/insert", {
+            movieName: movieName, 
+            movieRating: movieRating,
+            movieType: movieType,
+            movieYear: movieYear
+          });
 
-    // jeżeli nie jest to admin
-    else if (loginStatus.length > 0) {
+          setManageStatus("dodano");
 
-      setManageStatus("brak uprawnień");
+          // aktualizacja bez potrzeby odświeżania strony
+          setMovieList([
+            ...movieList, 
+            {movieName: movieName, movieRating: movieRating, movieType: movieType, movieYear: movieYear},
+          ]);
+        }
+
+        // jeżeli nie jest to admin
+        else if (loginStatus.length > 0) {
+
+          setManageStatus("brak uprawnień");
+        }
+        else {
+          setManageStatus("zaloguj się");
+        }
+      }
+      else {
+        setManageStatus("rok: 1900-2022");
+      }
     }
     else {
-      setManageStatus("zaloguj się");
+      setManageStatus("ocena: 0-10");
     }
   };
 
@@ -103,27 +123,33 @@ function App() {
 
 
 
-  // aktualizacja recenzji
-  const editReview = () => {
+  // aktualizacja oceny filmu
+  const editMovie = () => {
 
-    // aktualizować recenzję może tylko admin
-    if (loginStatus == "admin") {
+    if (movieRating >= 0 && movieRating <= 10) {
 
-      Axios.put("http://localhost:3001/api/update", {
-        movieName: movieName,
-        movieReview: review
-      });
+      // aktualizować ocenę filmu może tylko admin
+      if (loginStatus == "admin") {
 
-      setManageStatus("zaktualizowano");
-    }
+        Axios.put("http://localhost:3001/api/update", {
+          movieName: movieName,
+          movieRating: movieRating,
+        });
 
-    // jeżeli nie jest to admin
-    else if (loginStatus.length > 0) {
+        setManageStatus("zaktualizowano");
+      }
 
-      setManageStatus("brak uprawnień");
+      // jeżeli nie jest to admin
+      else if (loginStatus.length > 0) {
+
+        setManageStatus("brak uprawnień");
+      }
+      else {
+        setManageStatus("zaloguj się");
+      }
     }
     else {
-      setManageStatus("zaloguj się");
+      setManageStatus("ocena: 0-10");
     }
   };
 
@@ -135,8 +161,10 @@ function App() {
     setLoginStatus(" ");
 
     Axios.post("http://localhost:3001/api/register", {
+
       login: login, 
       password: password
+
     }).then((response) => {
       console.log(response);
     });
@@ -148,8 +176,10 @@ function App() {
   const loginFunction = () => {
 
     Axios.post("http://localhost:3001/api/login", {
+
       login: login, 
       password: password
+
     }).then((response) => {
 
       if (response.data.message) {
@@ -176,14 +206,14 @@ function App() {
 
 
   // wypożyczenie filmu
-  const borrowMovie = () => {
+  const rentMovie = () => {
 
     if (movieName.length == 0) {
-      setBorrowStatus("wpisz nazwę");
+      setRentStatus("wpisz nazwę");
     }
 
     else if (loginStatus.length == 0) {
-      setBorrowStatus("zaloguj się");
+      setRentStatus("zaloguj się");
     }
 
     // wypożyczać film mogą tylko zalogowani użytkownicy
@@ -196,7 +226,7 @@ function App() {
         login: login
       });
 
-      setBorrowStatus("wypożyczono");
+      setRentStatus("wypożyczono");
     }
   };
 
@@ -244,13 +274,13 @@ function App() {
         <div class="list__container">
           <h1 class="list__heading"><span>Dostępne filmy</span></h1>
 
-          {movieReviewList.map((val) => {
+          {movieList.map((val) => {
             return (
               <div className="card">
                 <h2> {val.movieName} </h2>
-                <p> {val.movieReview} </p>
-
-
+                <h3> {val.rating} </h3>
+                <h3> {val.type} </h3>
+                <h3> {val.year} </h3>
               </div>
             )
           })}
@@ -276,8 +306,8 @@ function App() {
           <input class="input" type="date" spellcheck="false" name="dateBegin" onChange={(e)=> {setBeginDate(e.target.value)}} />
           <h2>Data oddania</h2>
           <input class="input" type="date" spellcheck="false" name="dateEnd" onChange={(e)=> {setEndDate(e.target.value)}} />
-          <button id="borrowButton" class="main__btn" onClick={borrowMovie}><a href="#borrow">Wypożycz</a></button>
-          <h3>{borrowStatus}</h3>
+          <button id="borrowButton" class="main__btn" onClick={rentMovie}><a href="#borrow">Wypożycz</a></button>
+          <h3>{rentStatus}</h3>
         </div>
       </div>
 
@@ -289,12 +319,20 @@ function App() {
           <div>
             <h2 class="list__heading"><span>Nazwa</span></h2>
             <input class="input" spellcheck="false" placeholder="nazwa filmu" name="movieName" onChange={(e)=> {setMovieName(e.target.value)}} />
-            <h2 class="list__heading"><span>Recenzja</span></h2>
-            <input class="input" spellcheck="false" placeholder="recenzja" name="review" onChange={(e)=> {setReview(e.target.value)}} />
+
+            <h2 class="list__heading"><span>Ocena</span></h2>
+            <input class="input" spellcheck="false" type="number" placeholder="ocena" min="0" max="10" name="movieRating" onChange={(e)=> {setMovieRating(e.target.value)}} />
+
+            <h2 class="list__heading"><span>Typ</span></h2>
+            <input class="input" spellcheck="false" placeholder="typ" name="movieType" onChange={(e)=> {setMovieType(e.target.value)}} />
+
+            <h2 class="list__heading"><span>Rok produkcji</span></h2>
+            <input class="input" spellcheck="false" type="number" placeholder="rok" name="movieYear" onChange={(e)=> {setMovieYear(e.target.value)}} />
+
             <div>
-              <button id="addButton" class="main__btn" onClick={submitReview}><a href="#manage">Dodaj</a></button>
-              <button id="deleteButton" class="main__btn" onClick={deleteMovie}><a href="#manage">Usuń</a></button>
-              <button id="editButton" class="main__btn" onClick={editReview}><a href="#manage">Edytuj</a></button>
+              <button id="addButton" class="main__btn" onClick={submitMovie}><a href="#manage">Dodaj film</a></button>
+              <button id="deleteButton" class="main__btn" onClick={deleteMovie}><a href="#manage">Usuń film</a></button>
+              <button id="editButton" class="main__btn" onClick={editMovie}><a href="#manage">Edytuj ocenę</a></button>
             </div>
           </div>
           <h3>{manageStatus}</h3>
