@@ -43,6 +43,9 @@ function App() {
   // status wypożyczenia
   const [rentStatus, setRentStatus] = React.useState("");
 
+  // nazwa filmu w wypożyczeniach
+  const [borrowMovieName, setBorrowMovieName] = React.useState("");
+
 
   Axios.defaults.withCredentials = true;
 
@@ -231,6 +234,8 @@ function App() {
   };
 
 
+  // TODO: po naciśnięciu przycisku wypożycz na karcie, input w sekcji wypożyczenia wypełnia się nazwą filmu z danej karty
+  // TODO: do tabeli movies dodać rekord: czy wypożyczone, uwzględnić to w komendach sql
 
   return ( 
     <div className="App">
@@ -281,10 +286,10 @@ function App() {
                 <h3> {val.rating} </h3>
                 <h3> {val.type} </h3>
                 <h3> {val.year} </h3>
+                <button id="cardBorrowButton"><a href="#borrow">Wypożycz</a></button>
               </div>
             )
           })}
-
         </div> 
 
         <div class="list__container-2">
@@ -301,7 +306,7 @@ function App() {
         <div class="borrow__container">
           <h1>Wypożycz film</h1>
           <h2>Data wypożyczenia</h2>
-          <input class="input" type="text" spellcheck="false" placeholder="nazwa filmu" name="movieName" onChange={(e)=> {setMovieName(e.target.value)}} />
+          <input class="input" type="text" spellcheck="false" placeholder="nazwa filmu" name="movieName" value={borrowMovieName} onChange={(e)=> {setMovieName(e.target.value)}} />
           <h2>Data wypożyczenia</h2>
           <input class="input" type="date" spellcheck="false" name="dateBegin" onChange={(e)=> {setBeginDate(e.target.value)}} />
           <h2>Data oddania</h2>
@@ -327,7 +332,7 @@ function App() {
             <input class="input" spellcheck="false" placeholder="typ" name="movieType" onChange={(e)=> {setMovieType(e.target.value)}} />
 
             <h2 class="list__heading"><span>Rok produkcji</span></h2>
-            <input class="input" spellcheck="false" type="number" placeholder="rok" name="movieYear" onChange={(e)=> {setMovieYear(e.target.value)}} />
+            <input class="input" spellcheck="false" type="number" placeholder="rok" min="1900" max="2022" name="movieYear" onChange={(e)=> {setMovieYear(e.target.value)}} />
 
             <div>
               <button id="addButton" class="main__btn" onClick={submitMovie}><a href="#manage">Dodaj film</a></button>
