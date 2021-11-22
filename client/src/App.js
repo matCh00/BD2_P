@@ -281,12 +281,12 @@ function App() {
 
           {movieList.map((val) => {
             return (
-              <div className="card">
+              <div class="card">
                 <h2> {val.movieName} </h2>
-                <h3> {val.rating} </h3>
-                <h3> {val.type} </h3>
-                <h3> {val.year} </h3>
-                <button id="cardBorrowButton"><a href="#borrow">Wypożycz</a></button>
+                <h3>Ocena: {val.rating} </h3>
+                <h3>Typ: {val.type} </h3>
+                <h3>Rok: {val.year} </h3>
+                <button class="main__btn"><a href="#borrow">Wypożycz</a></button>
               </div>
             )
           })}

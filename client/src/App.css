@@ -137,6 +137,12 @@
   z-index: 2;
   color: #fff;
   text-decoration: none;
+  display: inline-block;   
+  padding: 0.7em;
+  margin-top: -0.8em;
+  margin-bottom: -0.8em;
+  margin-left: -2.1em;
+  margin-right: -2.1em;
 }
 
 
@@ -516,7 +522,7 @@
 
 .card {
   width: 400px;
-  height: 150px;
+  height: 210px;
   border-radius: 15px;
   margin: 15px;
   background: linear-gradient(to right,#ffbb8b,#e979af);
@@ -524,35 +530,46 @@
 }
 
 
-/* pole input w rekordach filmów */
-
-#updateInput {
-  width: 165px;
-  height: 25px;
-  font-size: 15px;
-  margin: 20px;
-  border-radius: 8px;
-  border: 1px;
-  text-align: center;
-}
-
-
-.list__container h2 {
-  margin-bottom: 10px;
-}
-
 
 /* w rekordach filmów */
 
 .card button { 
-  color:rgb(0, 0, 0); 
   background: -webkit-linear-gradient(to right,#ff6a00,#ee0979);
   background: linear-gradient(to right,#ff6a00,#ee0979);
-  width: 60px;
-  height: 22px;
-  font-weight: 600;
+  font-size: 1.5rem;
   border-radius: 7px; 
   border: 1px solid #9518fc;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.35s;
+  outline: none;
+  padding: 10px 45px;
+}
+
+
+.card h2 { 
+  font-size: 40px;
+  margin-bottom: 0px;
+  margin-top: 0px;
+  background: linear-gradient(to top left, #0000cc 0%, #ff0000 100%);
+  background-size: 100%;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -mo-text-fill-color: transparent;
+}
+
+
+.card h3 { 
+  font-size: 20px;
+  margin-bottom: 0px;
+  margin-top: 5px;
+  background: linear-gradient(to top left, #660066 0%, #003300 100%);
+  background-size: 100%;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -mo-text-fill-color: transparent;
 }
 
 
