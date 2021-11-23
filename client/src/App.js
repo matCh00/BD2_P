@@ -235,7 +235,7 @@ function App() {
 
 
   // TODO: po naciśnięciu przycisku wypożycz na karcie, input w sekcji wypożyczenia wypełnia się nazwą filmu z danej karty
-  // TODO: filtrowanie listy filmów (może być COMBO BOX) i wyświetlanie odświeżonej wersji
+  // TODO: filtrowanie listy filmów i wyświetlanie odświeżonej wersji
   // TODO: przy rejestracji powinny być komunikaty czy dodano użytkownika lub czy użytkownik już istnieje
   // TODO: po wypożyczeniu filmu zmienić status filmu w tabeli movies na 1-wypożyczony
   // TODO: dodać sposób odbierania filmów - ustawiania statusu w tabeli movies na 0-niewypożyczony
@@ -297,7 +297,17 @@ function App() {
 
         <div class="list__container-2">
           <h1 class="list__heading"><span>Znajdź film</span></h1>
-          <input class="input" placeholder="czego szukasz?" type="text" spellcheck="false"/>
+          <input class="input" placeholder="czego szukasz?" type="text" spellcheck="false" list="filter"/>
+          <datalist id="filter">
+            <option value="action">action</option>
+            <option>comedy</option>
+            <option>drama</option>
+            <option>fantasy</option>
+            <option>horror</option>
+            <option>mystery</option>
+            <option>romance</option>
+            <option>thriller</option>
+          </datalist>
           <button id="findButton" class="main__btn"><a href="#">Szukaj</a></button>
         </div>
 
