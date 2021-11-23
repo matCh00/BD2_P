@@ -124,10 +124,26 @@ app.post("/api/register", (req, res) => {
             console.log(err);
         }
 
-        const sqlInsert = "INSERT IGNORE INTO login_password (login, password) VALUES (?,?)";
+        // zwrócenie liczby wierszy z podanym loginem
+        const sqlSelect = "SELECT COUNT(*) AS cnt FROM login_password WHERE login LIKE ?"
 
-        db.query(sqlInsert, [login, hash], (err, result) => {
-            console.log(result);
+        db.query(sqlSelect, login, (err, result) => {
+            
+            // wartość zwracana komendą SQL
+            if (result[0].cnt == 0) {
+
+                // dodanie użytkownika do bazy
+                const sqlInsert = "INSERT IGNORE INTO login_password (login, password) VALUES (?,?)";
+
+                db.query(sqlInsert, [login, hash], (err, result) => {
+                    console.log(result);
+                });
+
+                res.send({message: "Dodano użytkownika"});
+            }
+            else {
+                res.send({message: "Użytkownik już istnieje"});
+            }
         });
     });
 });
@@ -208,6 +224,6 @@ app.post("/api/rent", (req, res) => {
     "UPDATE movies SET rented = true WHERE movieName = ?";
 
     db.query(sqlUpdate, movieName, (err, result) => {
-        if (err) console.log(err);
+        if (result) console.log(result);
     });
 });
