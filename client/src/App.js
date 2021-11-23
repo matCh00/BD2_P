@@ -235,7 +235,10 @@ function App() {
 
 
   // TODO: po naciśnięciu przycisku wypożycz na karcie, input w sekcji wypożyczenia wypełnia się nazwą filmu z danej karty
-  // TODO: do tabeli movies dodać rekord: czy wypożyczone, uwzględnić to w komendach sql
+  // TODO: filtrowanie listy filmów (może być COMBO BOX) i wyświetlanie odświeżonej wersji
+  // TODO: przy rejestracji powinny być komunikaty czy dodano użytkownika lub czy użytkownik już istnieje
+  // TODO: po wypożyczeniu filmu zmienić status filmu w tabeli movies na 1-wypożyczony
+  // TODO: dodać sposób odbierania filmów - ustawiania statusu w tabeli movies na 0-niewypożyczony
 
   return ( 
     <div className="App">
@@ -306,7 +309,7 @@ function App() {
         <div class="borrow__container">
           <h1>Wypożycz film</h1>
           <h2>Data wypożyczenia</h2>
-          <input class="input" type="text" spellcheck="false" placeholder="nazwa filmu" name="movieName" value={borrowMovieName} onChange={(e)=> {setMovieName(e.target.value)}} />
+          <input class="input" type="text" spellcheck="false" placeholder="nazwa filmu" name="movieName" onChange={(e)=> {setMovieName(e.target.value)}} />
           <h2>Data wypożyczenia</h2>
           <input class="input" type="date" spellcheck="false" name="dateBegin" onChange={(e)=> {setBeginDate(e.target.value)}} />
           <h2>Data oddania</h2>

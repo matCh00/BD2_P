@@ -62,7 +62,7 @@ app.get("/api/get", (req, res) => {
 
 
 
-// dodawanie filmu wraz z opinią
+// dodawanie filmu
 app.post("/api/insert", (req, res) => {
 
     const movieName = req.body.movieName;
@@ -71,9 +71,9 @@ app.post("/api/insert", (req, res) => {
     const movieYear = req.body.movieYear;
 
     const sqlInsert = 
-    "INSERT INTO movies (movieName, rating, type, year) VALUES (?,?,?,?)";
+    "INSERT INTO movies (movieName, rating, type, year, rented) VALUES (?,?,?,?,?)";
 
-    db.query(sqlInsert, [movieName, movieRating, movieType, movieYear], (err, result) => {
+    db.query(sqlInsert, [movieName, movieRating, movieType, movieYear, false], (err, result) => {
         console.log(result);
     });
 });
