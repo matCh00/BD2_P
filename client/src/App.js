@@ -236,8 +236,8 @@ function App() {
 
   // TODO: po naciśnięciu przycisku wypożycz na karcie, input w sekcji wypożyczenia wypełnia się nazwą filmu z danej karty
   // TODO: filtrowanie listy filmów i wyświetlanie odświeżonej wersji
-  // TODO: przy rejestracji powinny być komunikaty czy dodano użytkownika lub czy użytkownik już istnieje
-  // TODO: po wypożyczeniu filmu zmienić status filmu w tabeli movies na 1-wypożyczony
+  // TODO: przy rejestracji powinny być komunikaty: "dodano użytkownika" lub "użytkownik już istnieje"
+  // TODO: przed wypożyczeniem sprawdzić w tablicy movies czy film nie jest już wypożyczony, jeżeli jest wyświetlić komunikat
   // TODO: dodać sposób odbierania filmów - ustawiania statusu w tabeli movies na 0-niewypożyczony
 
   return ( 

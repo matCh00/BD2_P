@@ -202,4 +202,12 @@ app.post("/api/rent", (req, res) => {
     db.query(sqlInsert, [movieName, dateBegin, dateEnd, login], (err, result) => {
         console.log(result);
     });
+
+    // ustawienie statusu filmu w tabeli na wypożyczony
+    const sqlUpdate = 
+    "UPDATE movies SET rented = true WHERE movieName = ?";
+
+    db.query(sqlUpdate, movieName, (err, result) => {
+        if (err) console.log(err);
+    });
 });
