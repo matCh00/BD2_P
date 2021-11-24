@@ -301,7 +301,7 @@ function App() {
           <a href="#list" id="navbar__logo">Wypożyczalnia filmów</a>
           <ul class="navbar__menu">
             <li class="navbar__item">
-              <a href="#list" class="navbar__links" id="list-page">Lista filmów</a>
+              <a href="#list" class="navbar__links" id="list-page">Przeglądaj</a>
             </li>
             <li class="navbar__item">
               <a href="#borrow" class="navbar__links" id="borrow-page">Wypożycz</a>
@@ -310,7 +310,7 @@ function App() {
               <a href="#manage" class="navbar__links" id="manage-page">Zarządzaj</a>
             </li>
             <li class="navbar__btn">
-              <a href="#login" class="button" id="login-page">Zaloguj się</a>
+              <a href="#login" class="button" id="login-page">Logowanie</a>
             </li>
           </ul>
         </div>

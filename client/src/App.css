@@ -526,7 +526,7 @@
   height: 210px;
   border-radius: 15px;
   margin: 15px;
-  background: linear-gradient(to right,#ffbb8b,#e979af);
+  background: linear-gradient(to right,#ffd68b,#d379e9);
   padding-top: 10px;
 }
 
@@ -538,8 +538,7 @@
   background: -webkit-linear-gradient(to right,#ff6a00,#ee0979);
   background: linear-gradient(to right,#ff6a00,#ee0979);
   font-size: 1.5rem;
-  border-radius: 7px; 
-  border: 1px solid #9518fc;
+  border-radius: 4px; 
   cursor: pointer;
   position: relative;
   transition: all 0.35s;
