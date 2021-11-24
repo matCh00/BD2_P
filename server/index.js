@@ -70,8 +70,7 @@ app.post("/api/insert", (req, res) => {
     const movieType = req.body.movieType;
     const movieYear = req.body.movieYear;
 
-    const sqlInsert = 
-    "INSERT INTO movies (movieName, rating, type, year, rented) VALUES (?,?,?,?,?)";
+    const sqlInsert = "INSERT INTO movies (movieName, rating, type, year, rented) VALUES (?,?,?,?,?)";
 
     db.query(sqlInsert, [movieName, movieRating, movieType, movieYear, false], (err, result) => {
         console.log(result);
@@ -85,12 +84,26 @@ app.post("/api/delete", (req, res) => {
 
     const movieName = req.body.movieName;
   
-    const sqlDelete = 
-    "DELETE FROM movies WHERE movieName = ?";
+    // zwrócenie liczby wierszy z podaną nazwą
+    const sqlSelect = "SELECT COUNT(*) AS cnt FROM movies WHERE movieName LIKE ?"
+
+    db.query(sqlSelect, movieName, (err, result) => {
+            
+        // wartość zwracana komendą SQL
+        if (result[0].cnt > 0) {
+
+            const sqlDelete = "DELETE FROM movies WHERE movieName = ?";
   
-      db.query(sqlDelete, movieName, (err, result) => {
-          if (err) console.log(err);
-      });
+            db.query(sqlDelete, movieName, (err, result) => {
+                if (err) console.log(err);
+            });
+
+            res.send({message: "Usunięto"});
+        }
+        else {
+            res.send({message: "Nie ma takiego filmu"});
+        }
+    });
   });
 
 
@@ -101,11 +114,25 @@ app.put("/api/update", (req, res) => {
     const name = req.body.movieName;
     const movieRating = req.body.movieRating;
 
-    const sqlUpdate = 
-    "UPDATE movies SET rating = ? WHERE movieName = ?";
+    // zwrócenie liczby wierszy z podaną nazwą
+    const sqlSelect = "SELECT COUNT(*) AS count FROM movies WHERE movieName LIKE ?"
 
-    db.query(sqlUpdate, [movieRating, name], (err, result) => {
-        if (err) console.log(err);
+    db.query(sqlSelect, name, (err, result) => {
+            
+        // wartość zwracana komendą SQL
+        if (result[0].count > 0) {
+
+            const sqlUpdate = "UPDATE movies SET rating = ? WHERE movieName = ?";
+
+            db.query(sqlUpdate, [movieRating, name], (err, result) => {
+                if (err) console.log(err);
+            });
+
+            res.send({message: "Zaktualizowano"});
+        }
+        else {
+            res.send({message: "Nie ma takiego filmu"});
+        }
     });
 });
 
@@ -212,18 +239,32 @@ app.post("/api/rent", (req, res) => {
     const dateEnd = req.body.dateEnd;
     const login = req.body.login;
 
-    const sqlInsert = 
-    "INSERT INTO movie_rentals (movieName, dateBegin, dateEnd, userLogin) VALUES (?,?,?,?)";
+    // sprawdzenie czy film jest już wypożyczony
+    const sqlSelect = "SELECT rented FROM movies WHERE movieName LIKE ?"
 
-    db.query(sqlInsert, [movieName, dateBegin, dateEnd, login], (err, result) => {
-        console.log(result);
-    });
+    db.query(sqlSelect, movieName, (err, result) => {
 
-    // ustawienie statusu filmu w tabeli na wypożyczony
-    const sqlUpdate = 
-    "UPDATE movies SET rented = true WHERE movieName = ?";
+        // wartość pola rented
+        if (result[0].rented == 0) {
 
-    db.query(sqlUpdate, movieName, (err, result) => {
-        if (result) console.log(result);
+            const sqlInsert = "INSERT INTO movie_rentals (movieName, dateBegin, dateEnd, userLogin) VALUES (?,?,?,?)";
+
+            db.query(sqlInsert, [movieName, dateBegin, dateEnd, login], (err, result) => {
+                console.log(result);
+            });
+
+            // ustawienie statusu filmu w tabeli na wypożyczony
+            const sqlUpdate = "UPDATE movies SET rented = true WHERE movieName = ?";
+
+            db.query(sqlUpdate, movieName, (err, result) => {
+                if (result) console.log(result);
+            });
+            
+
+            res.send({message: "Dodano wypożyczenie"});
+        }
+        else {
+            res.send({message: "Film jest już wypożyczony"});
+        }
     });
 });

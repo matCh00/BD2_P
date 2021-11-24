@@ -62,14 +62,16 @@ function App() {
   // dodanie filmu z recenzją
   const submitMovie = () => {
 
-    if (movieRating >= 0 && movieRating <= 10) {
+    // dodawać filmy może tylko admin
+    if (loginStatus == "admin") {
 
-      if (movieYear >= 1900 && movieYear <= 2022) {
+      if (movieName.length > 0 && movieRating.length > 0 && movieType.length > 0 && movieYear.length > 0) {
 
-        // dodawać filmy może tylko admin
-        if (loginStatus == "admin") {
+        if (movieRating >= 0 && movieRating <= 10) {
 
-          Axios.post("http://localhost:3001/api/insert", {
+          if (movieYear >= 1900 && movieYear <= 2022) {
+
+            Axios.post("http://localhost:3001/api/insert", {
             movieName: movieName, 
             movieRating: movieRating,
             movieType: movieType,
@@ -83,24 +85,28 @@ function App() {
             ...movieList, 
             {movieName: movieName, movieRating: movieRating, movieType: movieType, movieYear: movieYear},
           ]);
-        }
-
-        // jeżeli nie jest to admin
-        else if (loginStatus.length > 0) {
-
-          setManageStatus("Brak uprawnień");
+          }
+          else {
+            setManageStatus("Rok: 1900-2022");
+          }
         }
         else {
-          setManageStatus("Zaloguj się");
+          setManageStatus("Ocena: 0-10");
         }
       }
       else {
-        setManageStatus("Rok: 1900-2022");
+        setManageStatus("Uzupełnij pola");
       }
     }
-    else {
-      setManageStatus("Ocena: 0-10");
+
+    // jeżeli jest to użytkownik
+    else if (loginStatus.length > 0) {
+
+      setManageStatus("Brak uprawnień");
     }
+    else {
+      setManageStatus("Zaloguj się");
+    } 
   };
 
 
@@ -110,8 +116,18 @@ function App() {
 
     // usuwać film może tylko admin
     if (loginStatus == "admin") {
-      Axios.post("http://localhost:3001/api/delete", {movieName: movieName});
-      setManageStatus("Usunięto");
+
+      Axios.post("http://localhost:3001/api/delete", {movieName: movieName})
+      
+      .then((response) => {
+      
+        if (response.data.message) {
+          setManageStatus(response.data.message);
+        }
+        else {
+          setManageStatus(" ");
+        }
+      });
     }
 
     // jeżeli nie jest to admin
@@ -129,30 +145,46 @@ function App() {
   // aktualizacja oceny filmu
   const editMovie = () => {
 
-    if (movieRating >= 0 && movieRating <= 10) {
+    // aktualizować ocenę filmu może tylko admin
+    if (loginStatus == "admin") {
 
-      // aktualizować ocenę filmu może tylko admin
-      if (loginStatus == "admin") {
+      if (movieRating.length > 0 && movieName.length > 0) {
 
-        Axios.put("http://localhost:3001/api/update", {
-          movieName: movieName,
-          movieRating: movieRating,
-        });
+        if (movieRating >= 0 && movieRating <= 10) {
 
-        setManageStatus("Zaktualizowano");
-      }
-
-      // jeżeli nie jest to admin
-      else if (loginStatus.length > 0) {
-
-        setManageStatus("Brak uprawnień");
+          Axios.put("http://localhost:3001/api/update", {
+            movieName: movieName,
+            movieRating: movieRating,
+          }).then((response) => {
+      
+            if (response.data.message) {
+              setManageStatus(response.data.message);
+            }
+            else {
+              setManageStatus(" ");
+            }
+          });
+  
+          setManageStatus("Zaktualizowano");
+        }
+  
+        else {
+          setManageStatus("Ocena: 0-10");
+        }
       }
       else {
-        setManageStatus("Zaloguj się");
+        setManageStatus("Uzupełnij pola");
       }
     }
+
+    // jeżeli jest to użytkownik
+    else if (loginStatus.length > 0) {
+
+      setManageStatus("Brak uprawnień");
+    }
+
     else {
-      setManageStatus("Ocena: 0-10");
+      setManageStatus("Zaloguj się");
     }
   };
 
@@ -193,7 +225,7 @@ function App() {
         setLoginStatus(response.data.message);
       }
       else {
-        setLoginStatus("Zalogowano: " + response.data[0].login);
+        setLoginStatus(response.data[0].login);
       }
     });
   };
@@ -205,7 +237,7 @@ function App() {
     Axios.get("http://localhost:3001/login").then((response) => {
 
       if (response.data.loggedIn == true) {
-        setLoginStatus("Zalogowano: " + response.data.user[0].login);
+        setLoginStatus(response.data.user[0].login);
       } 
     });
   }, []);
@@ -231,16 +263,21 @@ function App() {
         dateBegin: dateBegin,
         dateEnd: dateEnd,
         login: login
-      });
+      }).then((response) => {
 
-      setRentStatus("Wypożyczono");
+        if (response.data.message) {
+          setRentStatus(response.data.message);
+        }
+        else {
+          setRentStatus(" ");
+        }
+      });
     }
   };
 
 
   // TODO: po naciśnięciu przycisku wypożycz na karcie, input w sekcji wypożyczenia wypełnia się nazwą filmu z danej karty
   // TODO: filtrowanie listy filmów i wyświetlanie odświeżonej wersji
-  // TODO: przed wypożyczeniem sprawdzić w tablicy movies czy film nie jest już wypożyczony, jeżeli jest wyświetlić komunikat
   // TODO: dodać sposób odbierania filmów - ustawiania statusu w tabeli movies na 0-niewypożyczony
 
   return ( 
