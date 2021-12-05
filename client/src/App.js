@@ -358,7 +358,7 @@ function App() {
       <div class="borrow" id="borrow">
         <div class="borrow__container">
           <h1>Wypożycz film</h1>
-          <h2>Data wypożyczenia</h2>
+          <h2>Nazwa filmu</h2>
           <input class="input" type="text" spellcheck="false" placeholder="nazwa filmu" name="movieName" onChange={(e)=> {setMovieName(e.target.value)}} />
           <h2>Data wypożyczenia</h2>
           <input class="input" type="date" spellcheck="false" name="dateBegin" onChange={(e)=> {setBeginDate(e.target.value)}} />

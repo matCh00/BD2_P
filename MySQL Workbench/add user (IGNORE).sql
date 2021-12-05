@@ -1,0 +1,1 @@
+INSERT IGNORE INTO database_course.login_password (login, password) VALUES ("user3", "user3")
