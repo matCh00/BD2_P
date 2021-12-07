@@ -255,6 +255,10 @@ function App() {
       setRentStatus("Zaloguj się");
     }
 
+    else if (dateBegin == null || dateEnd == null) {
+      setRentStatus("Podaj datę")
+    }
+
     // wypożyczać film mogą tylko zalogowani użytkownicy
     else if (loginStatus.length > 0) {
 
@@ -276,9 +280,42 @@ function App() {
   };
 
 
+
+  // odebranie wypożyczonego filmu
+  const pickupMovie = () => {
+
+    if (movieName.length == 0) {
+      setManageStatus("Wpisz nazwę");
+    }
+
+    else if (loginStatus.length == 0) {
+      setManageStatus("Zaloguj się");
+    }
+
+    else if (loginStatus != "admin" && loginStatus.length > 0) {
+      setManageStatus("Brak uprawnień")
+    }
+
+    // odebrać film może tylko admin
+    else if (loginStatus == "admin") {
+
+      Axios.put("http://localhost:3001/api/pickup", {movieName: movieName}
+      
+      ).then((response) => {
+
+        if (response.data.message) {
+          setManageStatus(response.data.message);
+        }
+        else {
+          setManageStatus(" ");
+        }
+      });
+    }
+  };
+
+
   // TODO: po naciśnięciu przycisku wypożycz na karcie, input w sekcji wypożyczenia wypełnia się nazwą filmu z danej karty
   // TODO: filtrowanie listy filmów i wyświetlanie odświeżonej wersji
-  // TODO: dodać sposób odbierania filmów - ustawiania statusu w tabeli movies na 0-niewypożyczony
 
   return ( 
     <div className="App">
@@ -391,6 +428,7 @@ function App() {
               <button id="addButton" class="main__btn" onClick={submitMovie}><a href="#manage">Dodaj film</a></button>
               <button id="deleteButton" class="main__btn" onClick={deleteMovie}><a href="#manage">Usuń film</a></button>
               <button id="editButton" class="main__btn" onClick={editMovie}><a href="#manage">Edytuj ocenę</a></button>
+              <button id="pickupButton" class="main__btn" onClick={pickupMovie}><a href="#manage">Odbierz film</a></button>
             </div>
           </div>
           <h3>{manageStatus}</h3>

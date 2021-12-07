@@ -239,32 +239,93 @@ app.post("/api/rent", (req, res) => {
     const dateEnd = req.body.dateEnd;
     const login = req.body.login;
 
-    // sprawdzenie czy film jest już wypożyczony
-    const sqlSelect = "SELECT rented FROM movies WHERE movieName LIKE ?"
+
+    // zwrócenie liczby filmów z podaną nazwą
+    const sqlSelect = "SELECT COUNT(*) AS cnt FROM movies WHERE movieName LIKE ?"
 
     db.query(sqlSelect, movieName, (err, result) => {
 
-        // wartość pola rented
-        if (result[0].rented == 0) {
+        // wartość zwracana komendą SQL
+        if (result[0].cnt != 0) {
 
-            const sqlInsert = "INSERT INTO movie_rentals (movieName, dateBegin, dateEnd, userLogin) VALUES (?,?,?,?)";
+            // sprawdzenie czy film jest już wypożyczony
+            const sqlSelect = "SELECT rented FROM movies WHERE movieName LIKE ?"
 
-            db.query(sqlInsert, [movieName, dateBegin, dateEnd, login], (err, result) => {
-                console.log(result);
+            db.query(sqlSelect, movieName, (err, result) => {
+
+                // wartość pola rented
+                if (result[0].rented == 0) {
+
+                    const sqlInsert = "INSERT INTO movie_rentals (movieName, dateBegin, dateEnd, userLogin) VALUES (?,?,?,?)";
+
+                    db.query(sqlInsert, [movieName, dateBegin, dateEnd, login], (err, resulttt) => {
+
+                        if(resulttt) {
+
+                            // ustawienie statusu filmu w tabeli na wypożyczony
+                            const sqlUpdate = "UPDATE movies SET rented = true WHERE movieName = ?";
+
+                            db.query(sqlUpdate, movieName, (err, result) => {
+                                if (result) console.log(result);
+                            });
+                            
+                            res.send({message: "Dodano wypożyczenie"});
+                        }
+                        else {
+                            res.send({message: "Podaj datę"});
+                        }
+                    });
+                }
+                else {
+                    res.send({message: "Film jest już wypożyczony"});
+                }
             });
-
-            // ustawienie statusu filmu w tabeli na wypożyczony
-            const sqlUpdate = "UPDATE movies SET rented = true WHERE movieName = ?";
-
-            db.query(sqlUpdate, movieName, (err, result) => {
-                if (result) console.log(result);
-            });
-            
-
-            res.send({message: "Dodano wypożyczenie"});
         }
         else {
-            res.send({message: "Film jest już wypożyczony"});
+            res.send({message: "Nie ma takiego filmu"});
+        }
+    });
+});
+
+
+
+// odebranie filmu
+app.put("/api/pickup", (req, res) => {
+
+    const movieName = req.body.movieName;
+
+    // zwrócenie liczby filmów z podaną nazwą
+    const sqlSelect = "SELECT COUNT(*) AS cnt FROM movies WHERE movieName LIKE ?"
+
+    db.query(sqlSelect, movieName, (err, result) => {
+
+        // wartość zwracana komendą SQL
+        if (result[0].cnt != 0) {
+
+            // sprawdzenie czy film jest wypożyczony
+            const sqlSelect = "SELECT rented FROM movies WHERE movieName LIKE ?"
+
+            db.query(sqlSelect, movieName, (err, result) => {
+
+                // wartość pola rented
+                if (result[0].rented == 1) {
+
+                    // ustawienie statusu filmu w tabeli na niewypożyczony
+                    const sqlUpdate = "UPDATE movies SET rented = false WHERE movieName = ?";
+
+                    db.query(sqlUpdate, movieName, (err, result) => {
+                        if (result) console.log(result);
+                    });
+
+                    res.send({message: "Odebrano film"});
+                }
+                else {
+                    res.send({message: "Film nie jest wypożyczony"});
+                }
+            });    
+        }
+        else {
+            res.send({message: "Nie ma takiego filmu"});
         }
     });
 });
