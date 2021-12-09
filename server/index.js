@@ -62,6 +62,54 @@ app.get("/api/get", (req, res) => {
 
 
 
+// filtrowanie listy filmów 
+app.put("/api/filter", (req, res) => {
+
+    const movieType = req.body.movieType;
+
+    if (movieType.length == 0) {
+
+        var count;
+
+        // zwrócenie liczby elementów
+        const sqlSelect = "SELECT COUNT(*) AS cnt FROM movies"
+
+        db.query(sqlSelect, (err, resulttt) => {     
+
+            count = resulttt[0].cnt;
+
+            // wyświetlenie wszystkich filmów
+            const sqlSelect2 = "SELECT * FROM movies";
+
+            db.query(sqlSelect2, (err, result) => {
+            
+                res.send({list: result, counter: count});
+            });
+        });
+    }
+    else {
+        var count;
+
+        // zwrócenie liczby wybranych elementów
+        const sqlSelect = "SELECT COUNT(*) AS cnt FROM movies WHERE type LIKE ?"
+
+        db.query(sqlSelect, movieType, (err, resultt) => {    
+
+            count = resultt[0].cnt;
+
+            // wyświetlenie wybranych
+            const sqlSelect2 = "SELECT * FROM movies WHERE type = ?";
+
+            db.query(sqlSelect2, movieType, (err, result) => {
+            
+                res.send({list: result, counter: count});
+            });
+        });
+    }
+});
+
+
+
 // dodawanie filmu
 app.post("/api/insert", (req, res) => {
 

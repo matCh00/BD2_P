@@ -43,6 +43,9 @@ function App() {
   // status wypożyczenia
   const [rentStatus, setRentStatus] = React.useState("");
 
+   // status filtrowania
+   const [filterStatus, setFilterStatus] = React.useState("");
+
   // nazwa filmu w wypożyczeniach
   const [borrowMovieName, setBorrowMovieName] = React.useState("");
 
@@ -59,7 +62,27 @@ function App() {
 
 
 
-  // dodanie filmu z recenzją
+  // filtrowanie listy filmów
+  const filterMovies = () => {
+    
+    Axios.put("http://localhost:3001/api/filter", {movieType: movieType})
+  
+    .then((response) => {
+
+      setMovieList(response.data.list);
+      setFilterStatus("znaleziono: " + response.data.counter);
+    });
+      
+    // aktualizacja bez potrzeby odświeżania strony
+    setMovieList([
+      ...movieList, 
+      {movieName: movieName, movieRating: movieRating, movieType: movieType, movieYear: movieYear},
+    ]);
+  };
+
+
+
+  // dodanie filmu
   const submitMovie = () => {
 
     // dodawać filmy może tylko admin
@@ -315,7 +338,6 @@ function App() {
 
 
   // TODO: po naciśnięciu przycisku wypożycz na karcie, input w sekcji wypożyczenia wypełnia się nazwą filmu z danej karty
-  // TODO: filtrowanie listy filmów i wyświetlanie odświeżonej wersji
 
   return ( 
     <div className="App">
@@ -374,18 +396,20 @@ function App() {
 
         <div class="list__container-2">
           <h1 class="list__heading"><span>Znajdź film</span></h1>
-          <input class="input" placeholder="czego szukasz?" type="text" spellcheck="false" list="filter"/>
+          <input class="input" placeholder="czego szukasz?" type="text" spellcheck="false" list="filter" onChange={(e)=> {setMovieType(e.target.value)}}/>
           <datalist id="filter">
             <option value="action">action</option>
-            <option>comedy</option>
-            <option>drama</option>
-            <option>fantasy</option>
-            <option>horror</option>
-            <option>mystery</option>
-            <option>romance</option>
-            <option>thriller</option>
+            <option value="comedy">comedy</option>
+            <option value="drama">drama</option>
+            <option value="fantasy">fantasy</option>
+            <option value="horror">horror</option>
+            <option value="mystery">mystery</option>
+            <option value="romance">romance</option>
+            <option value="thriller">thriller</option>
           </datalist>
-          <button id="findButton" class="main__btn"><a href="#">Szukaj</a></button>
+          <button id="findButton" class="main__btn" onClick={filterMovies}><a href="#list">Szukaj</a></button>
+
+          <h3>{filterStatus}</h3>
         </div>
 
       </div>
