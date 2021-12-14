@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
+import borrowVisibility from './App.js'
 
 
 ReactDOM.render(
@@ -47,5 +48,8 @@ const highlightMenu = () => {
   }
 };
 
+// podświetlanie źle działa z ukrywaniem sekcji na stronie
+/*
 window.addEventListener('scroll', highlightMenu);
 window.addEventListener('click', highlightMenu);
+*/

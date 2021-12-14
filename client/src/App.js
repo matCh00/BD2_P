@@ -49,6 +49,13 @@ function App() {
   // nazwa filmu w wypożyczeniach
   const [borrowMovieName, setBorrowMovieName] = React.useState("");
 
+  // widoczność panelu wypożyczeń
+  const [borrowVisibility, setBorrowVisibility] = React.useState(false);
+
+  // widoczność panelu zarządzania
+  const [manageVisibility, setManageVisibility] = React.useState(false);
+
+
 
   Axios.defaults.withCredentials = true;
 
@@ -246,9 +253,22 @@ function App() {
 
       if (response.data.message) {
         setLoginStatus(response.data.message);
+
+        setBorrowVisibility(false)
+        setManageVisibility(false)
       }
       else {
         setLoginStatus(response.data[0].login);
+
+        // wyświetlane elementy w zależności od uprawnień
+        if (response.data[0].login == "admin") {
+          setBorrowVisibility(true)
+          setManageVisibility(true)
+        }
+        else {
+          setBorrowVisibility(true)
+          setManageVisibility(false)
+        }
       }
     });
   };
@@ -261,6 +281,16 @@ function App() {
 
       if (response.data.loggedIn == true) {
         setLoginStatus(response.data.user[0].login);
+
+        // wyświetlane elementy w zależności od uprawnień
+        if (loginStatus == "admin") {
+          setBorrowVisibility(true)
+          setManageVisibility(true)
+        }
+        else {
+          setBorrowVisibility(true)
+          setManageVisibility(false)
+        }
       } 
     });
   }, []);
@@ -340,6 +370,7 @@ function App() {
   // TODO: po naciśnięciu przycisku wypożycz na karcie, input w sekcji wypożyczenia wypełnia się nazwą filmu z danej karty
 
   return ( 
+    
     <div className="App">
 
       <head>
@@ -362,12 +393,23 @@ function App() {
             <li class="navbar__item">
               <a href="#list" class="navbar__links" id="list-page">Przeglądaj</a>
             </li>
+
+            {
+              borrowVisibility?
             <li class="navbar__item">
               <a href="#borrow" class="navbar__links" id="borrow-page">Wypożycz</a>
             </li>
+            :null
+            }
+
+            {
+              manageVisibility?
             <li class="navbar__item">
               <a href="#manage" class="navbar__links" id="manage-page">Zarządzaj</a>
             </li>
+            :null
+            }
+
             <li class="navbar__btn">
               <a href="#login" class="button" id="login-page">Logowanie</a>
             </li>
@@ -416,6 +458,8 @@ function App() {
 
 
 
+      {
+      borrowVisibility?  
       <div class="borrow" id="borrow">
         <div class="borrow__container">
           <h1>Wypożycz film</h1>
@@ -429,9 +473,11 @@ function App() {
           <h3>{rentStatus}</h3>
         </div>
       </div>
+      :null
+      }
 
-
-
+      {
+        manageVisibility?
       <div class="manage" id="manage">
         <div class="manage__container">
           <h1>Zarządzaj filmami</h1>
@@ -458,6 +504,8 @@ function App() {
           <h3>{manageStatus}</h3>
         </div>
       </div>
+      :null
+      }
 
 
 

@@ -215,7 +215,7 @@
 
 .list {
   background: #000000;
-  background: linear-gradient(to right, #161616, #000000);
+  background: linear-gradient(to top, #161616, #101010);
   padding: 50px 0;
   max-height: 900px;
   overflow-y: auto;
@@ -291,7 +291,7 @@
 
 .borrow {
   background: #000000;
-  background: linear-gradient(to right, #000000, #161616);
+  background: linear-gradient(to bottom, #101010, #161616);
   padding: 200px 0;
   padding-top: 150px;
 }
@@ -374,7 +374,7 @@
 
 .manage {
   background: #000000;
-  background: linear-gradient(to right, #161616, #000000);
+  background: linear-gradient(to top, #161616, #101010);
   padding: 200px 0;
   padding-top: 150px;
 }
@@ -457,7 +457,7 @@
 
 .login {
   background: #000000;
-  background: linear-gradient(to right, #000000, #161616);
+  background: linear-gradient(to bottom, #101010, #161616);
   padding: 200px 0;
   padding-top: 150px;
 }
