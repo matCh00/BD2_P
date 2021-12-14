@@ -368,6 +368,7 @@ function App() {
 
 
   // TODO: po naciśnięciu przycisku wypożycz na karcie, input w sekcji wypożyczenia wypełnia się nazwą filmu z danej karty
+  // TODO: podświetlanie elementów na górnym pasku w zależności od schowanych sekcji
 
   return ( 
     
