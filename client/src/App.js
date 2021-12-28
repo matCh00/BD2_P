@@ -372,10 +372,6 @@ function App() {
   const cardButtonFunction = (val) => {
 
     setMovieName(val.movieName)
-
-    // nie działa 
-    const input = document.getElementsByName("cardBtn")
-    input.value = val.movieName
   };
 
 
@@ -490,6 +486,8 @@ function App() {
       </div>
       :null
       }
+
+
 
       {
         manageVisibility?
