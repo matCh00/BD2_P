@@ -367,7 +367,18 @@ function App() {
   };
 
 
-  // TODO: po naciśnięciu przycisku wypożycz na karcie, input w sekcji wypożyczenia wypełnia się nazwą filmu z danej karty
+
+  // przycisk na kartach
+  const cardButtonFunction = (val) => {
+
+    setMovieName(val.movieName)
+
+    // nie działa 
+    const input = document.getElementsByName("cardBtn")
+    input.value = val.movieName
+  };
+
+
 
   return ( 
     
@@ -430,7 +441,11 @@ function App() {
                 <h3>Ocena: {val.rating} </h3>
                 <h3>Typ: {val.type} </h3>
                 <h3>Rok: {val.year} </h3>
-                <button class="main__btn"><a href="#borrow">Wypożycz</a></button>
+                {
+                borrowVisibility?  
+                <button class="main__btn" name="cardBtn" onClick={() => cardButtonFunction(val)}><a href="#borrow">Wypożycz</a></button>
+                :null
+                }
               </div>
             )
           })}
@@ -464,7 +479,7 @@ function App() {
         <div class="borrow__container">
           <h1>Wypożycz film</h1>
           <h2>Nazwa filmu</h2>
-          <input class="input" type="text" spellcheck="false" placeholder="nazwa filmu" name="movieName" onChange={(e)=> {setMovieName(e.target.value)}} />
+          <input class="input" type="text" spellcheck="false" placeholder="nazwa filmu" name="movieName" value={movieName} onChange={(e)=> {setMovieName(e.target.value)}} />
           <h2>Data wypożyczenia</h2>
           <input class="input" type="date" spellcheck="false" name="dateBegin" onChange={(e)=> {setBeginDate(e.target.value)}} />
           <h2>Data oddania</h2>
