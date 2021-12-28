@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import borrowVisibility from './App.js'
 
 
 ReactDOM.render(
@@ -25,31 +24,64 @@ const highlightMenu = () => {
   let scrollPos = window.scrollY;
 
 
-  // dodanie i usuwanie podświetleń
-  if (window.innerWidth > 960 && scrollPos < 600) {
-    listMenu.classList.add('highlight');
-    borrowMenu.classList.remove('highlight');
-    return;
-  } 
-  else if (window.innerWidth > 960 && scrollPos < 1400) {
-    borrowMenu.classList.add('highlight');
-    listMenu.classList.remove('highlight');
-    manageMenu.classList.remove('highlight');
-    return;
-  } 
-  else if (window.innerWidth > 960 && scrollPos < 2345) {
-    manageMenu.classList.add('highlight');
-    borrowMenu.classList.remove('highlight');
-    return;
+  // dodanie i usuwanie podświetleń - admin
+  if (borrowMenu != null && manageMenu != null) {
+  
+    if (window.innerWidth > 960 && scrollPos < 700) {
+      listMenu.classList.add('highlight');
+      borrowMenu.classList.remove('highlight');
+      return;
+    } 
+    else if (window.innerWidth > 960 && scrollPos < 2000) {
+      listMenu.classList.remove('highlight');
+      borrowMenu.classList.add('highlight');
+      manageMenu.classList.remove('highlight');
+      return;
+    } 
+    else if (window.innerWidth > 960 && scrollPos < 3500) {
+      borrowMenu.classList.remove('highlight');
+      manageMenu.classList.add('highlight');
+      return;
+    }
+
+    if ((elem && window.innerWIdth < 960 && scrollPos < 600) || elem) {
+      elem.classList.remove('highlight');
+    }
   }
 
-  if ((elem && window.innerWIdth < 960 && scrollPos < 600) || elem) {
-    elem.classList.remove('highlight');
+  // dodanie i usuwanie podświetleń - urzytkownik
+  else if (borrowMenu != null && manageMenu == null) {
+  
+    if (window.innerWidth > 960 && scrollPos < 700) {
+      listMenu.classList.add('highlight');
+      borrowMenu.classList.remove('highlight');
+      return;
+    } 
+    else if (window.innerWidth > 960 && scrollPos < 2000) {
+      listMenu.classList.remove('highlight');
+      borrowMenu.classList.add('highlight');
+      return;
+    } 
+
+    if ((elem && window.innerWIdth < 960 && scrollPos < 600) || elem) {
+      elem.classList.remove('highlight');
+    }
+  }
+
+  // dodanie i usuwanie podświetleń - brak logowania
+  else if (borrowMenu == null && manageMenu == null) {
+  
+    if (window.innerWidth > 960 && scrollPos < 700) {
+      listMenu.classList.add('highlight');
+      return;
+    }  
+
+    if ((elem && window.innerWIdth < 960 && scrollPos < 600) || elem) {
+      elem.classList.remove('highlight');
+    }
   }
 };
 
-// podświetlanie źle działa z ukrywaniem sekcji na stronie
-/*
+// podświetlanie na stronie
 window.addEventListener('scroll', highlightMenu);
 window.addEventListener('click', highlightMenu);
-*/
