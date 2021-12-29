@@ -28,6 +28,9 @@
 + cd client  ->  npm start
 + cd server  ->  npm run devStart (skrypty w package.json)
 
-ctrl + c  zatrzymuje działające wątki w terminalu
+
+---------------------------------
+
+ctrl + c  zatrzymuje działające wątki w terminalu     
 client - frontend     
 server - backend
