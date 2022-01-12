@@ -55,14 +55,24 @@ function App() {
   // widoczność panelu zarządzania
   const [manageVisibility, setManageVisibility] = React.useState(false);
 
+  // status bazy
+  const [databaseStatus, setDatabaseStatus] = React.useState(false);
+
 
 
   Axios.defaults.withCredentials = true;
 
 
-  // wyśiwtlenie listy po odświeżeniu strony
+  // wyświetlenie listy po odświeżeniu strony
   useEffect(() => {
     Axios.get("http://localhost:3001/api/get").then((response) => {
+
+      if (response.data == "error") {
+        alert("Connection error with database")
+        setDatabaseStatus(false);
+        return;
+      } 
+      setDatabaseStatus(true);
       setMovieList(response.data);
     });
   }, []);
@@ -108,7 +118,7 @@ function App() {
             movieYear: movieYear
           });
 
-          setManageStatus("Dodano");
+          setManageStatus("OK: Dodano");
 
           // aktualizacja bez potrzeby odświeżania strony
           setMovieList([
@@ -117,25 +127,25 @@ function App() {
           ]);
           }
           else {
-            setManageStatus("Rok: 1900-2022");
+            setManageStatus("Error: Rok musi być w przediale 1900-2022");
           }
         }
         else {
-          setManageStatus("Ocena: 0-10");
+          setManageStatus("Error: Ocena musi być w przediale 0-10");
         }
       }
       else {
-        setManageStatus("Uzupełnij pola");
+        setManageStatus("Error: Uzupełnij pola");
       }
     }
 
     // jeżeli jest to użytkownik
     else if (loginStatus.length > 0) {
 
-      setManageStatus("Brak uprawnień");
+      setManageStatus("Error: Brak uprawnień");
     }
     else {
-      setManageStatus("Zaloguj się");
+      setManageStatus("Error: Zaloguj się");
     } 
   };
 
@@ -163,10 +173,10 @@ function App() {
     // jeżeli nie jest to admin
     else if (loginStatus.length > 0) {
 
-      setManageStatus("Brak uprawnień");
+      setManageStatus("Error: Brak uprawnień");
     }
     else {
-      setManageStatus("Zaloguj się");
+      setManageStatus("Error: Zaloguj się");
     }
   }
 
@@ -195,26 +205,26 @@ function App() {
             }
           });
   
-          setManageStatus("Zaktualizowano");
+          setManageStatus("OK: Zaktualizowano");
         }
   
         else {
-          setManageStatus("Ocena: 0-10");
+          setManageStatus("Error: Ocena musi być w przediale 0-10");
         }
       }
       else {
-        setManageStatus("Uzupełnij pola");
+        setManageStatus("Error: Uzupełnij pola");
       }
     }
 
     // jeżeli jest to użytkownik
     else if (loginStatus.length > 0) {
 
-      setManageStatus("Brak uprawnień");
+      setManageStatus("Error: Brak uprawnień");
     }
 
     else {
-      setManageStatus("Zaloguj się");
+      setManageStatus("Error: Zaloguj się");
     }
   };
 
@@ -301,15 +311,19 @@ function App() {
   const rentMovie = () => {
 
     if (movieName.length == 0) {
-      setRentStatus("Wpisz nazwę");
+      setRentStatus("Error: Wpisz nazwę");
     }
 
     else if (loginStatus.length == 0) {
-      setRentStatus("Zaloguj się");
+      setRentStatus("Error: Zaloguj się");
     }
 
     else if (dateBegin == null || dateEnd == null) {
-      setRentStatus("Podaj datę")
+      setRentStatus("Error: Podaj datę")
+    }
+
+    else if (dateBegin > dateEnd) {
+      setRentStatus("Error: Niepoprawna data")
     }
 
     // wypożyczać film mogą tylko zalogowani użytkownicy
@@ -338,15 +352,15 @@ function App() {
   const pickupMovie = () => {
 
     if (movieName.length == 0) {
-      setManageStatus("Wpisz nazwę");
+      setManageStatus("Error: Wpisz nazwę");
     }
 
     else if (loginStatus.length == 0) {
-      setManageStatus("Zaloguj się");
+      setManageStatus("Error: Zaloguj się");
     }
 
     else if (loginStatus != "admin" && loginStatus.length > 0) {
-      setManageStatus("Brak uprawnień")
+      setManageStatus("Error: Brak uprawnień")
     }
 
     // odebrać film może tylko admin
@@ -376,6 +390,8 @@ function App() {
 
 
 
+  // condition ? value if true : value if false
+
   return ( 
     
     <div className="App">
@@ -400,6 +416,7 @@ function App() {
             <li class="navbar__item">
               <a href="#list" class="navbar__links" id="list-page">Przeglądaj</a>
             </li>
+
 
             {
               borrowVisibility?
@@ -438,6 +455,12 @@ function App() {
                 <h3>Typ: {val.type} </h3>
                 <h3>Rok: {val.year} </h3>
                 {
+                  val.rented?
+                  <h3>Wypożyczony</h3>
+                  :
+                  <h3>Niewypożyczony</h3>
+                }
+                {
                 borrowVisibility?  
                 <button class="main__btn" name="cardBtn" onClick={() => cardButtonFunction(val)}><a href="#borrow">Wypożycz</a></button>
                 :null
@@ -446,8 +469,7 @@ function App() {
             )
           })}
         </div> 
-
-        <div class="list__container-2">
+          <div class="list__container-2">
           <h1 class="list__heading"><span>Znajdź film</span></h1>
           <input class="input" placeholder="czego szukasz?" type="text" spellcheck="false" list="filter" onChange={(e)=> {setMovieType(e.target.value)}}/>
           <datalist id="filter">
@@ -460,11 +482,15 @@ function App() {
             <option value="romance">romance</option>
             <option value="thriller">thriller</option>
           </datalist>
+
+          {
+          databaseStatus ?
           <button id="findButton" class="main__btn" onClick={filterMovies}><a href="#list">Szukaj</a></button>
+          :null
+          }
 
           <h3>{filterStatus}</h3>
         </div>
-
       </div>
 
 
@@ -521,19 +547,26 @@ function App() {
       }
 
 
-
       <div class="login" id="login">
+        
         <div class="login__container">
           <h1>Zaloguj się lub załóż konto</h1>
           <input class="input" placeholder="login" type="text" spellcheck="false" name="login" onChange={(e)=> {setLogin(e.target.value)}}/>
           <input class="input" placeholder="hasło" type="password" spellcheck="false" name="password" onChange={(e)=> {setPassword(e.target.value)}}/>
+          
+          {
+          databaseStatus ?
           <div>
             <button id="loginButton" class="main__btn" onClick={loginFunction}><a href="#login">Zaloguj się</a></button>
             <button id="registerButton" class="main__btn" onClick={registerFunction}><a href="#login">Załóż konto</a></button>
           </div>
+          :null
+          }
+
           <h2>{loginStatus}</h2>
         </div>
       </div>
+      
     </div>
   )
 }

@@ -55,6 +55,11 @@ app.get("/api/get", (req, res) => {
 
     db.query(sqlSelect, (err, result) => {
         
+        if (err) {
+            res.send("error");
+            return;
+        }
+
         // i wyświetlenie
         res.send(result);
     });
@@ -146,10 +151,10 @@ app.post("/api/delete", (req, res) => {
                 if (err) console.log(err);
             });
 
-            res.send({message: "Usunięto"});
+            res.send({message: "OK: Usunięto"});
         }
         else {
-            res.send({message: "Nie ma takiego filmu"});
+            res.send({message: "Error: Nie ma takiego filmu"});
         }
     });
   });
@@ -176,10 +181,10 @@ app.put("/api/update", (req, res) => {
                 if (err) console.log(err);
             });
 
-            res.send({message: "Zaktualizowano"});
+            res.send({message: "OK: Zaktualizowano"});
         }
         else {
-            res.send({message: "Nie ma takiego filmu"});
+            res.send({message: "Error: Nie ma takiego filmu"});
         }
     });
 });
@@ -214,10 +219,10 @@ app.post("/api/register", (req, res) => {
                     console.log(result);
                 });
 
-                res.send({message: "Dodano użytkownika"});
+                res.send({message: "OK: Dodano użytkownika"});
             }
             else {
-                res.send({message: "Użytkownik już istnieje"});
+                res.send({message: "Error: Użytkownik już istnieje"});
             }
         });
     });
@@ -252,12 +257,12 @@ app.post("/api/login", (req, res) => {
                         res.send(result);
                     }
                     else {
-                        res.send({message: "Złe hasło"});
+                        res.send({message: "Error: Złe hasło"});
                     }
                 });
             }
             else {
-                res.send({message: "Urzytkownik nie istnieje"});
+                res.send({message: "Error: Urzytkownik nie istnieje"});
             }
         }
     });
@@ -317,20 +322,20 @@ app.post("/api/rent", (req, res) => {
                                 if (result) console.log(result);
                             });
                             
-                            res.send({message: "Dodano wypożyczenie"});
+                            res.send({message: "OK: Dodano wypożyczenie"});
                         }
                         else {
-                            res.send({message: "Podaj datę"});
+                            res.send({message: "Error: Podaj datę"});
                         }
                     });
                 }
                 else {
-                    res.send({message: "Film jest już wypożyczony"});
+                    res.send({message: "Error: Film jest już wypożyczony"});
                 }
             });
         }
         else {
-            res.send({message: "Nie ma takiego filmu"});
+            res.send({message: "Error: Nie ma takiego filmu"});
         }
     });
 });
@@ -365,15 +370,15 @@ app.put("/api/pickup", (req, res) => {
                         if (result) console.log(result);
                     });
 
-                    res.send({message: "Odebrano film"});
+                    res.send({message: "OK: Odebrano film"});
                 }
                 else {
-                    res.send({message: "Film nie jest wypożyczony"});
+                    res.send({message: "Error: Film nie jest wypożyczony"});
                 }
             });    
         }
         else {
-            res.send({message: "Nie ma takiego filmu"});
+            res.send({message: "Error: Nie ma takiego filmu"});
         }
     });
 });
